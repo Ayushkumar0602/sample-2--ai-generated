@@ -64,12 +64,12 @@ The application architecture is defined as follows:
 
 
 ## Files
-- dashboard.html
-- utils.js
-- profile.html
-- index.html
 - note-creation.html
+- dashboard.html
+- profile.html
+- utils.js
 - styles.css
+- index.html
 - firebase-config.js
 
 ## Getting Started
@@ -78,4 +78,4 @@ The application architecture is defined as follows:
 3. Start building!
 
 ---
-Generated on 07/07/2025, 13:38:56
+Generated on 07/07/2025, 13:56:40

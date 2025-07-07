@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            textarea {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Profile</h1>
+
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself"></textarea>
+            </div>
+
+            <button type="button" onclick="saveProfile()">Save Profile</button>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+        </form>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            messagingSenderId: "320617984870",
+            appId: "1:320617984870:web:04b61ea4ee88ae057e4ea7",
+            authDomain: "study2-7bdc7.firebaseapp.com",
+            projectId: "study2-7bdc7",
+            apiKey: "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
+            storageBucket: "study2-7bdc7.firebasestorage.app"
+        };
+
+        // Initialize Firebase (Check if already initialized to prevent errors)
+        let firebaseApp;
+        if (!firebase.apps.length) {
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+        } else {
+            firebaseApp = firebase.app(); // if already initialized, use that one
+        }
+
+        const db = firebaseApp.firestore();
+        const auth = firebaseApp.auth();
+
+        async function saveProfile() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const bio = document.getElementById('bio').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (!fullName || !email || !bio) {
+                errorMessage.textContent = "Please fill in all fields.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            try {
+                const user = auth.currentUser;
+
+                if (!user) {
+                    errorMessage.textContent = "User not authenticated. Please sign in.";
+                    errorMessage.style.display = "block";
+                    return;
+                }
+
+                await db.collection('users').doc(user.uid).set({
+                    fullName: fullName,
+                    email: email,
+                    bio: bio
+                });
+
+                alert('Profile saved successfully!');
+                errorMessage.style.display = "none";
+
+            } catch (error) {
+                console.error("Error saving profile: ", error);
+                errorMessage.textContent = "Error saving profile. Please try again.";
+                errorMessage.style.display = "block";
+            }
+        }
+
+        // Load profile data on page load
+        window.onload = async function() {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('fullName').value = data.fullName || '';
+                        document.getElementById('email').value = data.email || '';
+                        document.getElementById('bio').value = data.bio || '';
+                    }
+                } catch (error) {
+                    console.error("Error loading profile: ", error);
+                    const errorMessage = document.getElementById('errorMessage');
+                    errorMessage.textContent = "Error loading profile. Please try again.";
+                    errorMessage.style.display = "block";
+                }
+            }
+        };
+
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+</body>
+</html>

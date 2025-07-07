@@ -78,4 +78,4 @@ The application architecture is defined as follows:
 3. Start building!
 
 ---
-Generated on 07/07/2025, 13:56:40
+Generated on 07/07/2025, 13:57:43

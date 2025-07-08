@@ -64,8 +64,6 @@ The application architecture is defined as follows:
 
 
 ## Files
-- note-creation.html
-- profile.html
 - index.html
 - dashboard.html
 
@@ -75,4 +73,4 @@ The application architecture is defined as follows:
 3. Start building!
 
 ---
-Generated on 08/07/2025, 23:47:51
+Generated on 09/07/2025, 00:47:56

@@ -3,432 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <!-- Enhanced CSS for styling -->
+    <title>Dashboard - Study Notes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f7f9fc; /* Light gray background */
-            color: #343a40; /* Dark gray text */
-            line-height: 1.6;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-        }
-
-        /* Container Styles */
-        .dashboard-container {
-            display: flex;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            transition: all 0.3s ease; /* Smooth transition for sidebar changes */
+            color: #333;
         }
 
-        /* Sidebar Styles */
-        .sidebar {
-            width: 280px;
-            background-color: #343a40; /* Dark background */
-            color: #fff;
-            padding: 30px;
-            box-sizing: border-box;
-            position: fixed; /* Fixed sidebar */
-            height: 100%;
-            overflow-y: auto; /* Scrollable sidebar content */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-            z-index: 1000; /* Ensure it's above other content */
-            transition: width 0.3s ease; /* Smooth width transition */
-        }
-
-        .sidebar.collapsed {
-            width: 80px; /* Collapsed sidebar width */
-        }
-
-        .sidebar.collapsed h2,
-        .sidebar.collapsed li span {
-            display: none; /* Hide text when collapsed */
-        }
-
-        .sidebar.collapsed li a {
-            padding: 15px 10px; /* Adjust padding for icon-only view */
-            text-align: center;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 30px;
-            color: #fff;
-            font-size: 2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar li {
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .sidebar a {
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            border-radius: 8px;
-            transition: background-color 0.2s ease;
-        }
-
-        .sidebar a i {
-            margin-right: 15px;
-            font-size: 1.2rem;
-            width: 24px; /* Ensure consistent icon size */
-            text-align: center;
-        }
-
-        .sidebar a:hover {
-            background-color: rgba(255, 255, 255, 0.08); /* Lighten on hover */
-        }
-
-        /* Content Area Styles */
-        .content {
-            flex: 1;
-            padding: 30px;
-            box-sizing: border-box;
-            margin-left: 280px; /* Match sidebar width */
-            transition: margin-left 0.3s ease; /* Smooth margin transition */
-        }
-
-        .content.expanded {
-            margin-left: 80px; /* Collapsed sidebar width */
-        }
-
-        .dashboard-header {
-            background-color: #fff;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Deeper shadow */
-            border-bottom: 3px solid #007bff; /* Accent color */
-        }
-
-        .dashboard-header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            color: #343a40;
-        }
-
-        .dashboard-widgets {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .widget {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Deeper shadow */
-            border-left: 5px solid #007bff; /* Accent color */
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .widget:hover {
-            transform: translateY(-5px); /* Slight lift on hover */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
-        }
-
-        .widget h3 {
-            margin-top: 0;
-            font-size: 1.8rem;
-            color: #343a40;
-            margin-bottom: 15px;
-        }
-
-        /* Note list styling */
-        #noteList {
-            list-style: none;
-            padding: 0;
-        }
-
-        #noteList li {
-            background-color: #f8f9fa; /* Light background */
-            border: 1px solid #dee2e6; /* Light border */
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            transition: background-color 0.2s ease;
-        }
-
-        #noteList li:hover {
-            background-color: #e9ecef; /* Darken on hover */
-        }
-
-        #noteList li strong {
-            display: block;
-            margin-bottom: 5px;
-            color: #495057; /* Darker text for title */
-        }
-
-        #noteList li p {
-            margin: 0;
-            color: #6c757d; /* Gray text for content */
-        }
-
-        /* User Info Styling */
-        #userInfo {
-            font-size: 1.1rem;
-            color: #495057;
-            line-height: 1.8;
-        }
-
-        /* Logout Button Styling */
-        #logoutBtn {
-            background-color: #dc3545; /* Red background */
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.2s ease;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        #logoutBtn:hover {
-            background-color: #c82333; /* Darken on hover */
-        }
-
-        /* Toggle Button Styling */
-        #sidebarToggle {
+        .loading {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 1001; /* Ensure it's above sidebar */
-            transition: color 0.2s ease;
-        }
-
-        #sidebarToggle:hover {
-            color: #007bff;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .dashboard-widgets {
-                grid-template-columns: 1fr; /* Single column on smaller screens */
-            }
-
-            .content {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: static;
-                height: auto;
-                box-shadow: none;
-                padding: 15px;
-            }
-
-            .content {
-                margin-left: 0;
-            }
-
-            #sidebarToggle {
-                display: none; /* Hide toggle on very small screens */
-            }
-
-            .dashboard-container {
-                flex-direction: column;
-            }
-        }
-
-        /* Utility Classes */
-        .mt-3 {
-            margin-top: 1.5rem;
-        }
-
-        .mb-3 {
-            margin-bottom: 1.5rem;
-        }
-
-        .text-muted {
-            color: #6c757d;
-        }
-
-        .d-flex {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
             display: flex;
-        }
-
-        .align-items-center {
+            justify-content: center;
             align-items: center;
+            z-index: 9999;
         }
 
-        .justify-content-between {
-            justify-content: space-between;
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        /* Additional Styles for Enhanced UI */
-        .widget .icon {
-            font-size: 3rem;
-            color: #007bff;
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-
-        .widget .data {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #343a40;
-        }
-
-        /* Form Styling */
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #495057;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        button[type="submit"] {
-            background-color: #28a745; /* Green */
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.2s ease;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #218838; /* Darker Green */
-        }
-
-        /* Profile Page Styles */
-        .profile-card {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid #007bff;
-            margin-bottom: 30px;
-        }
-
-        .profile-card h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #343a40;
-        }
-
-        .profile-card p {
-            font-size: 1.1rem;
-            color: #495057;
-            line-height: 1.8;
-        }
-
-        /* Note Creation Page Styles */
-        .note-form {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid #007bff;
-            margin-bottom: 30px;
-        }
-
-        .note-form h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #343a40;
-        }
-
-        /* Data Table Styling */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 12px 15px;
-            border: 1px solid #dee2e6;
-            text-align: left;
-        }
-
-        .data-table th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-
-        .data-table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        /* Error Message Styling */
-        .error-message {
-            color: #dc3545;
-            margin-top: 10px;
-        }
-
-        /* Success Message Styling */
-        .success-message {
-            color: #28a745;
-            margin-top: 10px;
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
+        .spinner {
             width: 50px;
             height: 50px;
-            animation: spin 2s linear infinite;
-            margin: 20px auto;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
@@ -436,399 +46,536 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Dark Mode Styles (Optional) */
-        body.dark-mode {
-            background-color: #212529;
-            color: #fff;
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        body.dark-mode .dashboard-header,
-        body.dark-mode .widget,
-        body.dark-mode .profile-card,
-        body.dark-mode .note-form {
-            background-color: #343a40;
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
-            color: #fff;
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        body.dark-mode .dashboard-header h1,
-        body.dark-mode .widget h3,
-        body.dark-mode .profile-card h2,
-        body.dark-mode .note-form h2 {
-            color: #fff;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
         }
 
-        body.dark-mode #noteList li {
-            background-color: #495057;
-            border: 1px solid #6c757d;
-            color: #fff;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
 
-        body.dark-mode #userInfo {
-            color: #fff;
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
         }
 
-        body.dark-mode .data-table th {
-            background-color: #495057;
-            color: #fff;
+        .nav-links a:hover {
+            color: #667eea;
         }
 
-        body.dark-mode .data-table tbody tr:nth-child(even) {
-            background-color: #545b62;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        /* Animations */
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .notes-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border-left: 4px solid #667eea;
+        }
+
+        .note-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .note-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .note-preview {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .widget {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .widget-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .recent-activity {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .activity-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
             }
         }
 
-        .slide-in-left {
-            animation: slideInLeft 0.5s ease-out;
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: transform 0.3s;
         }
 
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        .toast.show {
+            transform: translateX(0);
         }
 
-        .slide-in-right {
-            animation: slideInRight 0.5s ease-out;
+        .toast.success {
+            background: #28a745;
         }
 
-        /* Additional Widget Styles */
-        .widget-small {
-            grid-column: span 1; /* Take up one column */
+        .toast.error {
+            background: #dc3545;
         }
 
-        .widget-large {
-            grid-column: span 2; /* Take up two columns */
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        .toast.info {
+            background: #17a2b8;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <button id="sidebarToggle"><i class="fas fa-bars"></i></button>
-            <h2>Dashboard Menu</h2>
-            <ul>
-                <li><a href="dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-                <li><a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                <li><a href="note-creation.html"><i class="fas fa-plus-circle"></i><span>Create Note</span></a></li>
-                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
-            </ul>
-        </div>
-
-        <!-- Content Area -->
-        <div class="content">
-            <div class="dashboard-header">
-                <h1>Welcome to Your Dashboard!</h1>
-                <p class="text-muted">Manage your notes and profile information here.</p>
-            </div>
-
-            <div class="dashboard-widgets">
-                <div class="widget fade-in">
-                    <h3>Notes</h3>
-                    <ul id="noteList">
-                        <!-- Notes will be dynamically added here -->
-                    </ul>
-                    <a href="note-creation.html" class="mt-3">Create a New Note</a>
-                </div>
-
-                <div class="widget fade-in">
-                    <h3>User Information</h3>
-                    <p id="userInfo">Loading user info...</p>
-                    <a href="profile.html" class="mt-3">Edit Profile</a>
-                </div>
-
-                <div class="widget widget-small fade-in">
-                    <h3>Quick Stats</h3>
-                    <div class="icon"><i class="fas fa-chart-bar"></i></div>
-                    <div class="data">12 Active Notes</div>
-                    <p class="text-muted">Updated 5 minutes ago</p>
-                </div>
-
-                <div class="widget widget-small fade-in">
-                    <h3>Reminders</h3>
-                    <div class="icon"><i class="fas fa-bell"></i></div>
-                    <div class="data">3 Upcoming</div>
-                    <p class="text-muted">Check your reminders</p>
-                </div>
-
-                <div class="widget widget-large fade-in">
-                    <h3>Recent Activity</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Activity</th>
-                                <th>Date</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Note Created</td>
-                                <td>2024-01-01</td>
-                                <td>Created a new note titled "My First Note"</td>
-                            </tr>
-                            <tr>
-                                <td>Profile Updated</td>
-                                <td>2024-01-02</td>
-                                <td>Updated email address</td>
-                            </tr>
-                            <tr>
-                                <td>Note Edited</td>
-                                <td>2024-01-03</td>
-                                <td>Edited note "My First Note"</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
     </div>
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-book"></i> StudyNotes
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active">Dashboard</a>
+                <a href="profile.html">Profile</a>
+                <a href="note-creation.html">Create Note</a>
+            </div>
+            <div class="user-info">
+                <img src="" alt="User Avatar" class="user-avatar" id="userAvatar" style="display: none;">
+                <span id="userName">Loading...</span>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Inline JavaScript for Firebase and real-time updates -->
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
-            authDomain: "study2-7bdc7.firebaseapp.com",
-            projectId: "study2-7bdc7",
-            storageBucket: "study2-7bdc7.firebasestorage.app",
-            messagingSenderId: "320617984870",
-            appId: "1:320617984870:web:04b61ea4ee88ae057e4ea7"
-        };
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Welcome back, <span id="welcomeName">User</span>!</h1>
+            <p>Manage your study notes and track your progress</p>
+        </div>
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-sticky-note"></i>
+                </div>
+                <div class="stat-number" id="totalNotes">0</div>
+                <div class="stat-label">Total Notes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="stat-number" id="todayNotes">0</div>
+                <div class="stat-label">Notes Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="stat-number" id="totalCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number" id="weeklyProgress">0</div>
+                <div class="stat-label">This Week</div>
+            </div>
+        </div>
 
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // Function to display notes
-        function displayNotes(notes) {
-            const noteList = document.getElementById('noteList');
-            noteList.innerHTML = ''; // Clear existing list
-
-            notes.forEach(note => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <strong>${note.title}</strong>
-                    <p>${note.content}</p>
-                `;
-                noteList.appendChild(li);
-            });
-        }
-
-        // Function to fetch and display user information
-        function displayUserInfo(user) {
-            const userInfoElement = document.getElementById('userInfo');
-            userInfoElement.textContent = `User ID: ${user.uid}, Email: ${user.email}`;
-        }
-
-        // Real-time listener for notes
-        function setupNotesListener() {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    db.collection('notes')
-                        .where('userId', '==', user.uid) // Filter notes by user ID
-                        .orderBy('createdAt', 'desc') // Order notes by creation date
-                        .onSnapshot(snapshot => {
-                            const notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                            displayNotes(notes);
-                        }, error => {
-                            console.error("Error getting notes: ", error);
-                        });
-                }
-            });
-        }
-
-        // Real-time listener for user information
-        function setupUserInfoListener() {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    displayUserInfo(user);
-                } else {
-                    window.location.href = 'index.html';// Redirect to login if not logged in
-                }
-            });
-        }
-
-        // Logout Functionality
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.signOut().then(() => {
-                // Sign-out successful.
-                window.location.href = 'index.html'; // Redirect to login page
-            }).catch((error) => {
-                // An error happened.
-                console.error("Logout error:", error);
-                alert("Failed to log out. Please try again.");
-            });
-        });
-
-        // Sidebar Toggle Functionality
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            const sidebar = document.querySelector('.sidebar');
-            const content = document.querySelector('.content');
-            sidebar.classList.toggle('collapsed');
-            content.classList.toggle('expanded');
-        });
-
-        // Call the setup functions when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            setupNotesListener();
-            setupUserInfoListener();
-
-            // Theme Toggle (Optional)
-            const body = document.querySelector('body');
-            const themeToggle = document.createElement('button');
-            themeToggle.textContent = 'Toggle Dark Mode';
-            themeToggle.style.position = 'fixed';
-            themeToggle.style.bottom = '20px';
-            themeToggle.style.right = '20px';
-            themeToggle.style.padding = '10px 15px';
-            themeToggle.style.backgroundColor = '#007bff';
-            themeToggle.style.color = '#fff';
-            themeToggle.style.border = 'none';
-            themeToggle.style.borderRadius = '5px';
-            themeToggle.style.cursor = 'pointer';
-            body.appendChild(themeToggle);
-
-            themeToggle.addEventListener('click', function() {
-                body.classList.toggle('dark-mode');
-            });
-        });
-
-        // Additional JavaScript Functions
-        // Function to fetch and display a random quote
-        function displayRandomQuote() {
-            const quotes = [
-                "The only way to do great work is to love what you do. - Steve Jobs",
-                "Strive not to be a success, but rather to be of value. - Albert Einstein",
-                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
-                "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart. - Helen Keller",
-                "It is during our darkest moments that we must focus to see the light. - Aristotle",
-                "Believe you can and you're halfway there. - Theodore Roosevelt",
-                "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
-                "The mind is everything. What you think you become. - Buddha",
-                "Happiness is not something readymade. It comes from your own actions. - Dalai Lama",
-                "The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela"
-            ];
-
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            const quote = quotes[randomIndex];
-
-            const quoteElement = document.createElement('p');
-            quoteElement.textContent = quote;
-            quoteElement.classList.add('text-muted', 'mt-3');
-
-            const dashboardHeader = document.querySelector('.dashboard-header');
-            dashboardHeader.appendChild(quoteElement);
-        }
-
-        // Function to display a welcome message based on the time of day
-        function displayWelcomeMessage() {
-            const now = new Date();
-            const hour = now.getHours();
-            let welcomeMessage = '';
-
-            if (hour < 12) {
-                welcomeMessage = 'Good morning!';
-            } else if (hour < 18) {
-                welcomeMessage = 'Good afternoon!';
-            } else {
-                welcomeMessage = 'Good evening!';
-            }
-
-            const welcomeElement = document.createElement('h2');
-            welcomeElement.textContent = welcomeMessage;
-            welcomeElement.classList.add('mb-3');
-
-            const dashboardHeader = document.querySelector('.dashboard-header');
-            dashboardHeader.insertBefore(welcomeElement, dashboardHeader.firstChild);
-        }
-
-        // Function to simulate loading data
-        function simulateLoading() {
-            const loadingSpinner = document.createElement('div');
-            loadingSpinner.classList.add('loading-spinner');
-
-            const userInfoElement = document.getElementById('userInfo');
-            userInfoElement.textContent = '';
-            userInfoElement.appendChild(loadingSpinner);
-
-            setTimeout(() => {
-                setupUserInfoListener(); // Re-initialize user info listener after loading
-            }, 2000); // Simulate 2 seconds loading time
-        }
-
-        // Call additional functions on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            setupNotesListener();
-            setupUserInfoListener();
-            displayRandomQuote();
-            displayWelcomeMessage();
-            simulateLoading();
-
-            // Theme Toggle (Optional)
-            const body = document.querySelector('body');
-            const themeToggle = document.createElement('button');
-            themeToggle.textContent = 'Toggle Dark Mode';
-            themeToggle.style.position = 'fixed';
-            themeToggle.style.bottom = '20px';
-            themeToggle.style.right = '20px';
-            themeToggle.style.padding = '10px 15px';
-            themeToggle.style.backgroundColor = '#007bff';
-            themeToggle.style.color = '#fff';
-            themeToggle.style.border = 'none';
-            themeToggle.style.borderRadius = '5px';
-            themeToggle.style.cursor = 'pointer';
-            body.appendChild(themeToggle);
-
-            themeToggle.addEventListener('click', function() {
-                body.classList.toggle('dark-mode');
-            });
-        });
-    </script>
-
-
+        <div class="main-content">
+            <div class="notes-section">
+                <div class="section-header">

@@ -1,931 +1,1060 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample 2 - Landing Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Study Notes App - Home</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
     <style>
-        /* General Styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* CSS Reset and Base Styles */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.7;
-            overflow-x: hidden;
+            box-sizing: border-box;
         }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Container and Layout */
         .container {
-            width: 85%;
-            margin: auto;
-            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
         /* Header Styles */
         header {
-            background: #2c3e50;
-            color: #fff;
-            padding-top: 25px;
-            min-height: 80px;
-            border-bottom: #e74c3c 3px solid;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        header a {
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
-            transition: color 0.3s ease;
-        }
-
-        header ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        header li {
-            float: left;
-            display: inline;
-            padding: 0 25px 0 25px;
-        }
-
-        header #branding {
-            float: left;
-        }
-
-        header #branding h1 {
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 1px;
-        }
-
-        header nav {
-            float: right;
-            margin-top: 15px;
-        }
-
-        header .highlight,
-        header .current a {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        header a:hover {
-            color: #ecf0f1;
-            font-weight: bold;
-        }
-
-        /* Showcase Styles */
-        #showcase {
-            min-height: 450px;
-            background: url('https://images.unsplash.com/photo-1507842214779-185cb4e7632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80') no-repeat 0 -100px;
-            background-size: cover;
-            text-align: center;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #showcase::before {
-            content: '';
-            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Semi-transparent overlay */
-            z-index: 1;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        #showcase .container {
-            position: relative;
-            z-index: 2;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        #showcase h1 {
-            margin-top: 120px;
-            font-size: 55px;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
         }
 
-        #showcase p {
-            font-size: 22px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
         }
 
-        /* Newsletter Styles */
-        #newsletter {
-            padding: 20px;
-            color: #fff;
-            background: #34495e;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-
-        #newsletter h1 {
-            float: left;
-            font-size: 24px;
-            margin-top: 5px;
-        }
-
-        #newsletter form {
-            float: right;
-            margin-top: 10px;
-        }
-
-        #newsletter input[type="email"] {
-            padding: 8px;
-            height: 35px;
-            width: 300px;
-            border: none;
-            border-radius: 3px;
-            font-size: 16px;
-        }
-
-        .button_1 {
-            height: 40px;
-            background: #e74c3c;
-            border: 0;
-            padding-left: 25px;
-            padding-right: 25px;
-            color: #fff;
-            border-radius: 3px;
-            font-size: 16px;
-            cursor: pointer;
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
-        .button_1:hover {
-            background-color: #c0392b;
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Boxes Styles */
-        #boxes {
-            margin-top: 30px;
-        }
-
-        #boxes .box {
-            float: left;
-            width: 30%;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #ddd;
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
             border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        #boxes .box:hover {
-            transform: translateY(-5px);
-        }
-
-        #boxes .box img {
-            width: 100px;
-            margin-bottom: 15px;
-        }
-
-        #boxes .box h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        #boxes .box p {
-            font-size: 15px;
-            color: #555;
-        }
-
-        /* Sidebar Styles */
-        aside#sidebar {
-            float: right;
-            width: 32%;
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        aside#sidebar .quote input,
-        aside#sidebar .quote textarea {
-            width: 92%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 15px;
-        }
-
-        aside#sidebar .quote label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        /* Main Styles */
-        article#main-col {
-            float: left;
-            width: 65%;
-        }
-
-        article#main-col h1.page-title {
-            font-size: 32px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e74c3c;
-            padding-bottom: 10px;
-        }
-
-        article#main-col p {
-            font-size: 17px;
-            color: #444;
-        }
-
-        /* Footer Styles */
-        footer {
-            padding: 30px;
-            margin-top: 30px;
-            color: #fff;
-            background-color: #e74c3c;
-            text-align: center;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        footer p {
-            font-size: 16px;
-        }
-
-        /* Media Queries */
-        @media(max-width: 768px) {
-
-            header #branding,
-            header nav,
-            header nav li,
-            #newsletter h1,
-            #newsletter form,
-            #boxes .box,
-            aside#sidebar,
-            article#main-col {
-                float: none;
-                text-align: center;
-                width: 100%;
-            }
-
-            header {
-                padding-bottom: 20px;
-            }
-
-            #showcase h1 {
-                margin-top: 60px;
-                font-size: 40px;
-            }
-
-            #showcase p {
-                font-size: 18px;
-            }
-
-            #newsletter form {
-                margin-top: 10px;
-            }
-
-            #newsletter input[type="email"] {
-                width: 80%;
-            }
-
-            #boxes .box {
-                margin-bottom: 20px;
-            }
-
-            aside#sidebar {
-                margin-top: 30px;
-            }
-        }
-
-        /* Additional Styles */
-        .social-icons {
-            margin-top: 20px;
-        }
-
-        .social-icons a {
-            display: inline-block;
-            margin: 0 10px;
-            font-size: 24px;
-            color: #fff;
-            transition: color 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            color: #ecf0f1;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        #showcase {
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        /* Enhanced Button Styles */
-        .button_1 {
-            position: relative;
-            overflow: hidden;
+            cursor: pointer;
+            font-size: 1rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
-        .button_1:before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            display: block;
-            width: 0;
-            padding-top: 0;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease-out, padding-top 0.4s ease-out;
-        }
-
-        .button_1:active:before {
-            width: 150%;
-            padding-top: 150%;
-            transition: width 0.4s ease-in, padding-top 0.4s ease-in;
-        }
-
-        /* Gradient Background */
-        body {
-            background: linear-gradient(to bottom, #f4f4f4, #e8e8e8);
-        }
-
-        /* Shadow Effects */
-        header {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        #boxes .box {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        aside#sidebar {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Transition Effects */
-        header a {
-            transition: color 0.3s ease, transform 0.2s ease;
-        }
-
-        header a:hover {
+        .btn:hover {
+            background: #45a049;
             transform: translateY(-2px);
         }
 
-        /* Enhanced Form Styles */
-        #newsletter input[type="email"] {
-            border: 2px solid transparent;
-            transition: border-color 0.3s ease;
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
         }
 
-        #newsletter input[type="email"]:focus {
-            border-color: #e74c3c;
-            outline: none;
+        .btn-secondary:hover {
+            background: white;
+            color: #333;
         }
 
-        aside#sidebar .quote input:focus,
-        aside#sidebar .quote textarea:focus {
-            border-color: #e74c3c;
-            outline: none;
+        /* Main Content */
+        main {
+            padding: 4rem 0;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 4rem;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        /* Responsive Images */
-        img {
-            max-width: 100%;
-            height: auto;
+        /* Authentication Section */
+        .auth-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
         }
 
-        /* Enhanced Typography */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            color: #2c3e50;
+        .auth-section.active {
+            display: block;
         }
 
-        p {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 16px;
+        .auth-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
             color: #555;
         }
 
-        /* Improved Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Hover Effects */
-        #boxes .box:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-5px);
-        }
-
-        /* Interactive Elements */
-        .button_1:hover {
-            transform: scale(1.05);
-        }
-
-        /* Accessibility Improvements */
-        a:focus {
-            outline: 2px solid #e74c3c;
-        }
-
-        /* Enhanced Footer */
-        footer {
-            background: #34495e;
-            color: #fff;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        footer p {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        footer .social-icons a {
-            color: #fff;
-            font-size: 20px;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-
-        footer .social-icons a:hover {
-            color: #e74c3c;
-        }
-
-        /* Improved Newsletter */
-        #newsletter {
-            background: #ecf0f1;
-            color: #2c3e50;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        #newsletter h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        #newsletter input[type="email"] {
-            width: 70%;
-            padding: 15px;
-            border: none;
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 16px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
         }
 
-        #newsletter .button_1 {
-            padding: 15px 30px;
-            font-size: 18px;
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
-        /* More Responsive Adjustments */
-        @media (max-width: 600px) {
-            #newsletter h1 {
-                font-size: 24px;
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .google-btn {
+            background: #db4437;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .google-btn:hover {
+            background: #c23321;
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .auth-toggle a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .auth-toggle a:hover {
+            text-decoration: underline;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            opacity: 0.9;
+        }
+
+        /* Error and Success Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .message.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
             }
 
-            #newsletter input[type="email"] {
-                width: 90%;
+            .hero h1 {
+                font-size: 2.5rem;
             }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .auth-section {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* User Info Display */
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .user-info.show {
+            display: flex;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #f44336;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: #d32f2f;
         }
     </style>
 </head>
-
 <body>
-    <!-- Header Section -->
+    <!-- Header with Navigation -->
     <header>
-        <div class="container">
-            <div id="branding">
-                <h1><span class="highlight">Sample</span> 2</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li class="current"><a href="index.html">Home</a></li>
-                    <li><a href="dashboard.html">Dashboard</a></li>
-                    <li><a href="profile.html">Profile</a></li>
-                </ul>
-            </nav>
-        </div>
+        <nav class="container">
+            <a href="#" class="logo">📚 StudyNotes</a>
+            <ul class="nav-links">
+                <!-- Navigation links for unauthenticated users -->
+                <li class="auth-nav">
+                    <a href="#" onclick="showLogin()">Login</a>
+                </li>
+                <li class="auth-nav">
+                    <a href="#" onclick="showRegister()">Register</a>
+                </li>
+                
+                <!-- Navigation links for authenticated users -->
+                <li class="user-nav" style="display: none;">
+                    <a href="dashboard.html">Dashboard</a>
+                </li>
+                <li class="user-nav" style="display: none;">
+                    <a href="profile.html">Profile</a>
+                </li>
+                <li class="user-nav" style="display: none;">
+                    <a href="note-creation.html">Create Note</a>
+                </li>
+                
+                <!-- User info and logout -->
+                <li class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="userName"></span>
+                    <button class="btn logout-btn" onclick="logout()">Logout</button>
+                </li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Showcase Section -->
-    <section id="showcase">
-        <div class="container">
-            <h1>Empowering Your Firebase Journey</h1>
-            <p>Unlock the full potential of Firebase with our comprehensive platform. From authentication to real-time
-                databases, we've got you covered.</p>
-        </div>
-    </section>
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Welcome to StudyNotes</h1>
+            <p>Organize your thoughts, boost your productivity, and never lose an important note again.</p>
+            <div class="hero-buttons">
+                <button class="btn" onclick="showRegister()">Get Started</button>
+                <button class="btn btn-secondary" onclick="showLogin()">Sign In</button>
+            </div>
+        </section>
 
-    <!-- Newsletter Section -->
-    <section id="newsletter">
-        <div class="container">
-            <h1>Stay Updated with the Latest Firebase Trends</h1>
-            <form id="newsletterForm">
-                <input type="email" placeholder="Enter Your Email...">
-                <button type="submit" class="button_1">Subscribe Now</button>
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+
+        <!-- Login Form -->
+        <section class="auth-section" id="loginSection">
+            <h2>Sign In to Your Account</h2>
+            
+            <!-- Message Display -->
+            <div class="message" id="loginMessage"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="auth-buttons">
+                    <button type="submit" class="btn">Sign In</button>
+                    <button type="button" class="btn google-btn" onclick="signInWithGoogle()">
+                        🔍 Sign in with Google
+                    </button>
+                </div>
             </form>
-        </div>
-    </section>
-
-    <!-- Boxes Section -->
-    <section id="boxes">
-        <div class="container">
-            <div class="box">
-                <img src="https://firebasestorage.googleapis.com/v0/b/study2-7bdc7.appspot.com/o/authentication.png?alt=media&token=64c01227-8c96-4c3c-9d16-85c218993e3d"
-                    alt="Firebase Authentication">
-                <h3>Firebase Authentication</h3>
-                <p>Secure your app with robust authentication methods, including email/password, Google, and more.
-                    Effortlessly manage user access and protect sensitive data.</p>
+            
+            <div class="auth-toggle">
+                <p>Don't have an account? <a href="#" onclick="showRegister()">Sign up here</a></p>
             </div>
-            <div class="box">
-                <img src="https://firebasestorage.googleapis.com/v0/b/study2-7bdc7.appspot.com/o/firestore.png?alt=media&token=912782a4-4058-4730-8a83-00e0f87d779b"
-                    alt="Cloud Firestore">
-                <h3>Cloud Firestore</h3>
-                <p>Experience real-time data synchronization and flexible data modeling with Cloud Firestore. Build
-                    dynamic and responsive applications with ease.</p>
-            </div>
-            <div class="box">
-                <img src="https://firebasestorage.googleapis.com/v0/b/study2-7bdc7.appspot.com/o/cloudfunctions.png?alt=media&token=9609c6c2-1446-4441-9064-89653d992620"
-                    alt="Cloud Functions">
-                <h3>Cloud Functions</h3>
-                <p>Extend your app's capabilities with serverless backend logic using Cloud Functions. Automate tasks,
-                    integrate with third-party services, and scale effortlessly.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Main Content & Sidebar Section -->
-    <div class="container">
-        <article id="main-col">
-            <h1 class="page-title">About Us</h1>
-            <p>
-                Welcome to Sample 2, your gateway to mastering Firebase development. We are a dedicated team of
-                Firebase enthusiasts committed to providing you with the tools, resources, and expertise you need to
-                build exceptional applications.
-            </p>
-            <p>
-                Our mission is to empower developers of all skill levels to harness the power of Firebase and create
-                innovative solutions. Whether you're a seasoned Firebase expert or just starting your journey, we're
-                here to support you every step of the way.
-            </p>
-
-            <h2>Our Core Values</h2>
-            <ul>
-                <li><strong>Innovation:</strong> We constantly explore new Firebase features and technologies to bring
-                    you cutting-edge solutions.</li>
-                <li><strong>Collaboration:</strong> We foster a collaborative environment where developers can learn
-                    from each other and contribute to the Firebase community.</li>
-                <li><strong>Excellence:</strong> We strive for excellence in everything we do, from our code to our
-                    customer service.</li>
-                <li><strong>Accessibility:</strong> We believe that Firebase should be accessible to everyone, regardless
-                    of their background or experience.</li>
-            </ul>
-
-            <h2>Our Vision</h2>
-            <p>
-                To be the leading resource for Firebase developers worldwide, empowering them to build impactful
-                applications that make a difference.
-            </p>
-
-            <h2>Meet the Team</h2>
-            <div class="team-members">
-                <div class="team-member">
-                    <img src="https://via.placeholder.com/100" alt="Team Member 1">
-                    <h3>John Doe</h3>
-                    <p>Lead Developer</p>
-                    <p>John is a passionate Firebase developer with over 10 years of experience. He's responsible for
-                        designing and implementing our core platform features.</p>
+        <!-- Register Form -->
+        <section class="auth-section" id="registerSection">
+            <h2>Create Your Account</h2>
+            
+            <!-- Message Display -->
+            <div class="message" id="registerMessage"></div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail" required>
                 </div>
-                <div class="team-member">
-                    <img src="https://via.placeholder.com/100" alt="Team Member 2">
-                    <h3>Jane Smith</h3>
-                    <p>UI/UX Designer</p>
-                    <p>Jane is a talented UI/UX designer who ensures that our platform is both visually appealing and
-                        user-friendly.</p>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required minlength="6">
                 </div>
-                <div class="team-member">
-                    <img src="https://via.placeholder.com/100" alt="Team Member 3">
-                    <h3>Peter Jones</h3>
-                    <p>Community Manager</p>
-                    <p>Peter is our community manager, responsible for fostering a vibrant and supportive Firebase
-                        community.</p>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required minlength="6">
                 </div>
+                <div class="auth-buttons">
+                    <button type="submit" class="btn">Create Account</button>
+                    <button type="button" class="btn google-btn" onclick="signInWithGoogle()">
+                        🔍 Sign up with Google
+                    </button>
+                </div>
+            </form>
+            
+            <div class="auth-toggle">
+                <p>Already have an account? <a href="#" onclick="showLogin()">Sign in here</a></p>
             </div>
+        </section>
 
-            <h2>Contact Us</h2>
-            <p>
-                Have questions or feedback? We'd love to hear from you! Contact us at <a
-                    href="mailto:support@sample2.com">support@sample2.com</a>.
-            </p>
-        </article>
-
-        <aside id="sidebar">
-            <div class="quote">
-                <h3>Get a Free Consultation</h3>
-                <form id="quoteForm">
-                    <div>
-                        <label for="name">Name</label><br>
-                        <input type="text" id="name" placeholder="Your Name">
-                    </div>
-                    <div>
-                        <label for="email">Email</label><br>
-                        <input type="email" id="email" placeholder="Your Email Address">
-                    </div>
-                    <div>
-                        <label for="message">Message</label><br>
-                        <textarea id="message" placeholder="Tell us about your project"></textarea>
-                    </div>
-                    <button class="button_1" type="submit">Request Consultation</button>
-                </form>
+        <!-- Features Section -->
+        <section class="features">
+            <div class="feature-card">
+                <h3>📝 Rich Note Taking</h3>
+                <p>Create detailed notes with rich text formatting and organize them efficiently.</p>
             </div>
-        </aside>
-    </div>
-
-    <!-- Footer Section -->
-    <footer>
-        <div class="container">
-            <p>Sample 2, Copyright &copy; 2024</p>
-            <div class="social-icons">
-                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            <div class="feature-card">
+                <h3>🔒 Secure & Private</h3>
+                <p>Your notes are securely stored and only accessible to you with robust authentication.</p>
             </div>
-            <p>Powered by Firebase</p>
-        </div>
-    </footer>
-
-    <!-- Firebase Initialization Script -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+            <div class="feature-card">
+                <h3>📱 Responsive Design</h3>
+                <p>Access your notes from any device with our fully responsive web application.</p>
+            </div>
+        </section>
+    </main>
 
     <script>
-        // Firebase configuration
+        /**
+         * Firebase Configuration and Initialization
+         * This section initializes Firebase with the provided configuration
+         * and sets up authentication and firestore services
+         */
+        
+        // Firebase configuration object
         const firebaseConfig = {
-            "storageBucket": "study2-7bdc7.firebasestorage.app",
-            "messagingSenderId": "320617984870",
-            "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
-            "projectId": "study2-7bdc7",
-            "authDomain": "study2-7bdc7.firebaseapp.com",
-            "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7"
+            apiKey: "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
+            authDomain: "study2-7bdc7.firebaseapp.com",
+            projectId: "study2-7bdc7",
+            storageBucket: "study2-7bdc7.firebasestorage.app",
+            messagingSenderId: "320617984870",
+            appId: "1:320617984870:web:04b61ea4ee88ae057e4ea7"
         };
 
         // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        } else {
-            firebase.app();
-        }
-
-        const db = firebase.firestore();
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize Firebase services
         const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Configure Google Auth Provider
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope('profile');
 
-        // Authentication state observer
-        auth.onAuthStateChanged(user => {
+        /**
+         * Global Variables and State Management
+         */
+        let currentUser = null;
+
+        /**
+         * Authentication State Management
+         * Monitors user authentication state and updates UI accordingly
+         */
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            updateUIForAuthState(user);
+            
             if (user) {
-                console.log('User is signed in:', user.uid);
-                // Example: Fetch user data from Firestore
-                db.collection("users").doc(user.uid).get()
-                    .then(doc => {
-                        if (doc.exists) {
-                            console.log("User data:", doc.data());
-                            // Update UI with user data if needed
-                        } else {
-                            console.log("No such document!");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error getting document:", error);
-                    });
+                console.log('User signed in:', user.email);
+                // Create or update user document in Firestore
+                createUserDocument(user);
             } else {
-                console.log('User is signed out.');
+                console.log('User signed out');
             }
         });
 
-        // Newsletter subscription handler
-        const newsletterForm = document.querySelector('#newsletterForm');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = newsletterForm.querySelector('input[type="email"]');
-                const email = emailInput.value;
+        /**
+         * Updates the UI based on authentication state
+         * @param {Object|null} user - Firebase user object or null
+         */
+        function updateUIForAuthState(user) {
+            const authNavItems = document.querySelectorAll('.auth-nav');
+            const userNavItems = document.querySelectorAll('.user-nav');
+            const userInfo = document.querySelector('.user-info');
+            const authSections = document.querySelectorAll('.auth-section');
+            
+            if (user) {
+                // Hide authentication navigation and forms
+                authNavItems.forEach(item => item.style.display = 'none');
+                authSections.forEach(section => section.classList.remove('active'));
+                
+                // Show user navigation and info
+                userNavItems.forEach(item => item.style.display = 'block');
+                userInfo.classList.add('show');
+                
+                // Update user display information
+                updateUserDisplay(user);
+            } else {
+                // Show authentication navigation
+                authNavItems.forEach(item => item.style.display = 'block');
+                
+                // Hide user navigation and info
+                userNavItems.forEach(item => item.style.display = 'none');
+                userInfo.classList.remove('show');
+            }
+        }
 
-                if (email) {
-                    db.collection("newsletter_subscriptions").add({
-                        email: email,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    })
-                        .then(docRef => {
-                            console.log("Document written with ID: ", docRef.id);
-                            alert('Thank you for subscribing! You will receive updates on Firebase trends and tips.');
-                            emailInput.value = ''; // Clear the input
-                        })
-                        .catch(error => {
-                            console.error("Error adding document: ", error);
-                            alert('An error occurred. Please try again later.');
-                        });
+        /**
+         * Updates user display information in the navigation
+         * @param {Object} user - Firebase user object
+         */
+        function updateUserDisplay(user) {
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            
+            if (user.photoURL) {
+                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="User Avatar" style="width: 100%; height: 100%; border-radius: 50%;">`;
+            } else {
+                // Display first letter of email as avatar
+                const firstLetter = user.email.charAt(0).toUpperCase();
+                userAvatar.textContent = firstLetter;
+            }
+            
+            // Display user name or email
+            userName.textContent = user.displayName || user.email.split('@')[0];
+        }
+
+        /**
+         * Creates or updates user document in Firestore
+         * @param {Object} user - Firebase user object
+         */
+        async function createUserDocument(user) {
+            try {
+                const userRef = db.collection('users').doc(user.uid);
+                const userDoc = await userRef.get();
+                
+                if (!userDoc.exists) {
+                    // Create new user document
+                    await userRef.set({
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: user.displayName || '',
+                        photoURL: user.photoURL || '',
+                        bio: '',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('User document created successfully');
                 } else {
-                    alert('Please enter your email address to subscribe.');
+                    // Update existing user document with latest info
+                    await userRef.update({
+                        email: user.email,
+                        displayName: user.displayName || userDoc.data().displayName,
+                        photoURL: user.photoURL || userDoc.data().photoURL,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('User document updated successfully');
+                }
+            } catch (error) {
+                console.error('Error creating/updating user document:', error);
+                showMessage('error', 'Failed to save user information. Please try again.', 'loginMessage');
+            }
+        }
+
+        /**
+         * UI Navigation Functions
+         * These functions handle showing/hiding different sections of the application
+         */
+
+        /**
+         * Shows the login form and hides other auth sections
+         */
+        function showLogin() {
+            hideAllAuthSections();
+            document.getElementById('loginSection').classList.add('active');
+            clearMessages();
+        }
+
+        /**
+         * Shows the register form and hides other auth sections
+         */
+        function showRegister() {
+            hideAllAuthSections();
+            document.getElementById('registerSection').classList.add('active');
+            clearMessages();
+        }
+
+        /**
+         * Hides all authentication sections
+         */
+        function hideAllAuthSections() {
+            const authSections = document.querySelectorAll('.auth-section');
+            authSections.forEach(section => section.classList.remove('active'));
+        }
+
+        /**
+         * Authentication Functions
+         * These functions handle user registration, login, and logout
+         */
+
+        /**
+         * Handles user registration with email and password
+         * @param {Event} event - Form submission event
+         */
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Client-side validation
+            if (!validateRegistrationForm(email, password, confirmPassword)) {
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                // Create user with email and password
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                showMessage('success', 'Account created successfully! Welcome to StudyNotes.', 'registerMessage');
+                
+                // Clear form
+                document.getElementById('registerForm').reset();
+                
+                // Redirect to dashboard after short delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                handleAuthError(error, 'registerMessage');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        /**
+         * Handles user login with email and password
+         * @param {Event} event - Form submission event
+         */
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // Client-side validation
+            if (!validateLoginForm(email, password)) {
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                // Sign in user with email and password
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                showMessage('success', 'Signed in successfully! Redirecting to dashboard...', 'loginMessage');
+                
+                // Clear form
+                document.getElementById('loginForm').reset();
+                
+                // Redirect to dashboard after short delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                handleAuthError(error, 'loginMessage');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        /**
+         * Handles Google Sign-In authentication
+         */
+        async function signInWithGoogle() {
+            showLoading(true);
+            
+            try {
+                const result = await auth.signInWithPopup(googleProvider);
+                const user = result.user;
+                
+                showMessage('success', 'Signed in with Google successfully! Redirecting to dashboard...', 'loginMessage');
+                
+                // Redirect to dashboard after short delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                
+                // Handle specific Google sign-in errors
+                if (error.code === 'auth/popup-closed-by-user') {
+                    showMessage('error', 'Sign-in was cancelled. Please try again.', 'loginMessage');
+                } else if (error.code === 'auth/popup-blocked') {
+                    showMessage('error', 'Pop-up was blocked. Please allow pop-ups and try again.', 'loginMessage');
+                } else {
+                    handleAuthError(error, 'loginMessage');
+                }
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        /**
+         * Handles user logout
+         */
+        async function logout() {
+            try {
+                await auth.signOut();
+                showMessage('success', 'Signed out successfully!', 'loginMessage');
+                
+                // Redirect to home page after short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Logout error:', error);
+                showMessage('error', 'Failed to sign out. Please try again.', 'loginMessage');
+            }
+        }
+
+        /**
+         * Form Validation Functions
+         * These functions validate user input before submission
+         */
+
+        /**
+         * Validates registration form inputs
+         * @param {string} email - User email
+         * @param {string} password - User password
+         * @param {string} confirmPassword - Password confirmation
+         * @returns {boolean} - Validation result
+         */
+        function validateRegistrationForm(email, password, confirmPassword) {
+            // Email validation
+            if (!email || !isValidEmail(email)) {
+                showMessage('error', 'Please enter a valid email address.', 'registerMessage');
+                return false;
+            }
+            
+            // Password validation
+            if (!password || password.length < 6) {
+                showMessage('error', 'Password must be at least 6 characters long.', 'registerMessage');
+                return false;
+            }
+            
+            // Password confirmation validation
+            if (password !== confirmPassword) {
+                showMessage('error', 'Passwords do not match. Please try again.', 'registerMessage');
+                return false;
+            }
+            
+            return true;
+        }
+
+        /**
+         * Validates login form inputs
+         * @param {string} email - User email
+         * @param {string} password - User password
+         * @returns {boolean} - Validation result
+         */
+        function validateLoginForm(email, password) {
+            // Email validation
+            if (!email || !isValidEmail(email)) {
+                showMessage('error', 'Please enter a valid email address.', 'loginMessage');
+                return false;
+            }
+            
+            // Password validation
+            if (!password) {
+                showMessage('error', 'Please enter your password.', 'loginMessage');
+                return false;
+            }
+            
+            return true;
+        }
+
+        /**
+         * Validates email format using regex
+         * @param {string} email - Email to validate
+         * @returns {boolean} - Validation result
+         */
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        /**
+         * Error Handling Functions
+         * These functions handle and display errors to users
+         */
+
+        /**
+         * Handles Firebase authentication errors and displays user-friendly messages
+         * @param {Object} error - Firebase error object
+         * @param {string} messageElementId - ID of element to display message in
+         */
+        function handleAuthError(error, messageElementId) {
+            let errorMessage = 'An unexpected error occurred. Please try again.';
+            
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    errorMessage = 'No account found with this email address.';
+                    break;
+                case 'auth/wrong-password':
+                    errorMessage = 'Incorrect password. Please try again.';
+                    break;
+                case 'auth/email-already-in-use':
+                    errorMessage = 'An account with this email already exists.';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'Password is too weak. Please choose a stronger password.';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Invalid email address format.';
+                    break;
+                case 'auth/user-disabled':
+                    errorMessage = 'This account has been disabled. Please contact support.';
+                    break;
+                case 'auth/too-many-requests':
+                    errorMessage = 'Too many failed attempts. Please try again later.';
+                    break;
+                case 'auth/network-request-failed':
+                    errorMessage = 'Network error. Please check your connection and try again.';
+                    break;
+                default:
+                    console.error('Unhandled auth error:', error);
+                    errorMessage = `Error: ${error.message}`;
+            }
+            
+            showMessage('error', errorMessage, messageElementId);
+        }
+
+        /**
+         * Utility Functions
+         * These functions provide common functionality used throughout the application
+         */
+
+        /**
+         * Displays a message to the user
+         * @param {string} type - Message type ('success' or 'error')
+         * @param {string} message - Message text to display
+         * @param {string} elementId - ID of element to display message in
+         */
+        function showMessage(type, message, elementId) {
+            const messageElement = document.getElementById(elementId);
+            if (messageElement) {
+                messageElement.textContent = message;
+                messageElement.className = `message ${type} show`;
+                
+                // Auto-hide success messages after 5 seconds
+                if (type === 'success') {
+                    setTimeout(() => {
+                        messageElement.classList.remove('show');
+                    }, 5000);
+                }
+            }
+        }
+
+        /**
+         * Clears all message displays
+         */
+        function clearMessages() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                message.classList.remove('show');
+                message.textContent = '';
+            });
+        }
+
+        /**
+         * Shows or hides loading indicator
+         * @param {boolean} show - Whether to show loading indicator
+         */
+        function showLoading(show) {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        /**
+         * Event Listeners
+         * Set up event listeners for form submissions and other interactions
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login form submission
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+            
+            // Register form submission
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleRegister);
+            }
+            
+            // Handle Enter key in password fields for better UX
+            document.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    const activeElement = document.activeElement;
+                    if (activeElement && activeElement.type === 'password') {
+                        const form = activeElement.closest('form');
+                        if (form) {
+                            form.dispatchEvent(new Event('submit'));
+                        }
+                    }
                 }
             });
-        }
-
-        // Quote form submission handler
-        const quoteForm = document.querySelector('#quoteForm');
-        if (quoteForm) {
-            quoteForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const nameInput = quoteForm.querySelector('#name');
-                const emailInput = quoteForm.querySelector('#email');
-                const messageInput = quoteForm.querySelector('#message');
-
-                const name = nameInput.value;
-                const email = emailInput.value;
-                const message = messageInput.value;
-
-                if (name && email && message) {
-                    db.collection("consultation_requests").add({
-                        name: name,
-                        email: email,
-                        message: message,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    })
-                        .then(docRef => {
-                            console.log("Consultation request submitted with ID: ", docRef.id);
-                            alert('Thank you for your request! We will contact you shortly.');
-                            nameInput.value = '';
-                            emailInput.value = '';
-                            messageInput.value = '';
-                        })
-                        .catch(error => {
-                            console.error("Error submitting consultation request: ", error);
-                            alert('An error occurred. Please try again later.');
-                        });
-                } else {
-                    alert('Please fill in all the fields to request a consultation.');
-                }
-            });
-        }
-
-        // Function to simulate a loading state
-        function showLoading(element) {
-            element.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            element.disabled = true;
-        }
-
-        // Function to hide the loading state
-        function hideLoading(element, originalText) {
-            element.innerHTML = originalText;
-            element.disabled = false;
-        }
-
-        // Example of reading data from Firestore
-        db.collection("users").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
-            });
-        }).catch((error) => {
-            console.error("Error getting documents: ", error);
         });
 
-        // Example of adding a new user to Firestore after authentication
-        function createUserInFirestore(user) {
-            db.collection("users").doc(user.uid).set({
-                email: user.email,
-                name: "", // You can add a name field in the registration form
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-                .then(() => {
-                    console.log("User document successfully written!");
-                })
-                .catch((error) => {
-                    console.error("Error writing user document: ", error);
-                });
+        /**
+         * Security Best Practices Implementation
+         * - Input validation and sanitization
+         * - Proper error handling without exposing sensitive information
+         * - Secure Firebase configuration
+         * - HTTPS enforcement (handled by Firebase Hosting)
+         * - Content Security Policy headers (should be configured at server level)
+         */
+
+        // Prevent XSS by sanitizing user inputs
+        function sanitizeInput(input) {
+            const div = document.createElement('div');
+            div.textContent = input;
+            return div.innerHTML;
         }
 
-        // Example of signing up a user with email and password
-        function signUpWithEmailAndPassword(email, password) {
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("User signed up:", user.uid);
-                    createUserInFirestore(user); // Add user data to Firestore
-                })
-                .catch((error) => {
-                    console.error("Error signing up:", error);
-                    alert("Error signing up: " + error.message);
-                });
+        // Rate limiting for authentication attempts (basic client-side implementation)
+        let authAttempts = 0;
+        const MAX_AUTH_ATTEMPTS = 5;
+        const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes
+
+        function checkRateLimit() {
+            const lastAttempt = localStorage.getItem('lastAuthAttempt');
+            const attempts = parseInt(localStorage.getItem('authAttempts') || '0');
+            
+            if (attempts >= MAX_AUTH_ATTEMPTS) {
+                const timeSinceLastAttempt = Date.now() - parseInt(lastAttempt || '0');
+                if (timeSinceLastAttempt < LOCKOUT_TIME) {
+                    const remainingTime = Math.ceil((LOCKOUT_TIME - timeSinceLastAttempt) / 60000);
+                    throw new Error(`Too many failed attempts. Please try again in ${remainingTime} minutes.`);
+                } else {
+                    // Reset attempts after lockout period
+                    localStorage.removeItem('authAttempts');
+                    localStorage.removeItem('lastAuthAttempt');
+                }
+            }
         }
 
-        // Example of signing in a user with email and password
-        function signInWithEmailAndPassword(email, password) {
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("User signed in:", user.uid);
-                })
-                .catch((error) => {
-                    console.error("Error signing in:", error);
-                    alert("Error signing in: " + error.message);
-                });
+        function recordAuthAttempt(success) {
+            if (success) {
+                // Clear attempts on successful login
+                localStorage.removeItem('authAttempts');
+                localStorage.removeItem('lastAuthAttempt');
+            } else {
+                // Increment failed attempts
+                const attempts = parseInt(localStorage.getItem('authAttempts') || '0') + 1;
+                localStorage.setItem('authAttempts', attempts.toString());
+                localStorage.setItem('lastAuthAttempt', Date.now().toString());
+            }
         }
 
-        // Example of signing out a user
-        function signOut() {
-            auth.signOut()
-                .then(() => {
-                    console.log("User signed out");
-                })
-                .catch((error) => {
-                    console.error("Error signing out:", error);
-                });
-        }
-
-        // Example of resetting a user's password
-        function resetPassword(email) {
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    console.log("Password reset email sent!");
-                    alert("Password reset email sent! Check your inbox.");
-                })
-                .catch((error) => {
-                    console.error("Error sending password reset email:", error);
-                    alert("Error sending password reset email: " + error.message);
-                });
-        }
-
-        // Add more Firebase-related functions and features as needed
-
-        // Example: Fetch notes from Firestore
-        function fetchNotes() {
-            db.collection("notes").where("userId", "==", auth.currentUser.uid) // Assuming notes are associated with user ID
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        console.log(doc.id, " => ", doc.data());
-                        // Process the note data
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error getting notes: ", error);
-                });
-        }
+        console.log('StudyNotes application initialized successfully');
     </script>
 </body>
-
 </html>

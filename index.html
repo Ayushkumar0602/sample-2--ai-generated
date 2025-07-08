@@ -3,323 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Web App</title>
+    <title>Login/Signup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Basic CSS for responsiveness and styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
+            color: #fff;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
         }
 
         .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
-
-        header {
-            background: #333;
-            color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
-            border-bottom: 3px solid #e8491d;
-        }
-
-        header a {
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
-        }
-
-        header ul {
-            padding: 0;
-            margin: 0;
-        }
-
-        header li {
-            float: left;
-            display: inline;
-            padding: 0 20px 0 20px;
-        }
-
-        header #branding {
-            float: left;
-        }
-
-        header #branding h1 {
-            margin: 0;
-        }
-
-        header nav {
-            float: right;
-            margin-top: 10px;
-        }
-
-        header .highlight, header .current a {
-            color: #e8491d;
-            font-weight: bold;
-        }
-
-        header a:hover {
-            color: #ccc;
-            font-weight: bold;
-        }
-
-        #showcase {
-            min-height: 400px;
-            background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white container */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 400px;
             text-align: center;
-            color: #fff;
+            transition: transform 0.3s ease-in-out;
         }
 
-        #showcase h1 {
-            margin-top: 100px;
-            font-size: 55px;
-            margin-bottom: 10px;
+        .container:hover {
+            transform: translateY(-5px);
         }
 
-        #showcase p {
-            font-size: 20px;
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        #newsletter {
-            padding: 15px;
-            color: #fff;
-            background: #333;
-        }
-
-        #newsletter h1 {
-            float: left;
-        }
-
-        #newsletter form {
-            float: right;
-            margin-top: 15px;
-        }
-
-        #newsletter input[type="email"] {
-            padding: 4px;
-            height: 25px;
-            width: 250px;
-        }
-
-        .button_1 {
-            height: 38px;
-            background: #e8491d;
-            border: 0;
-            padding-left: 20px;
-            padding-right: 20px;
-            color: #fff;
-        }
-
-        article#main-col {
-            float: left;
-            width: 65%;
-        }
-
-        aside#sidebar {
-            float: right;
-            width: 30%;
-            margin-top: 10px;
-        }
-
-        footer {
-            padding: 20px;
-            margin-top: 20px;
-            color: #fff;
-            background-color: #e8491d;
-            text-align: center;
-        }
-
-        /* Responsive Styling */
-        @media(max-width: 768px) {
-            header #branding,
-            header nav,
-            header nav li,
-            #newsletter h1,
-            #newsletter form,
-            #boxes .box,
-            article#main-col,
-            aside#sidebar {
-                float: none;
-                text-align: center;
-                width: 100%;
-            }
-
-            header {
-                padding-bottom: 20px;
-            }
-
-            #showcase h1 {
-                margin-top: 40px;
-            }
-
-            #newsletter form {
-                margin-top: 0;
-            }
-
-            #newsletter input[type="email"] {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-        }
-
-        /* Form Styles */
-        form {
-            padding: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
         input[type="email"],
-        input[type="password"],
-        textarea {
+        input[type="password"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            box-sizing: border-box; /* Important for responsive width */
+            padding: 15px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            background-color: #e2e2e2;
+            outline: none;
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
-            padding: 10px 15px;
+            padding: 15px 25px;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         button:hover {
-            background-color: #3e8e41;
+            background-color: #0056b3;
+            transform: translateY(-2px);
         }
 
-        .error {
-            color: red;
+        .error-message {
+            color: #ff4d4d;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        .success {
-            color: green;
+        .hidden {
+            display: none;
         }
 
-        /* Dashboard Styles */
-        .dashboard-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+        #dashboard-links {
+            margin-top: 30px;
+            text-align: left;
         }
 
-        .dashboard-content {
-            width: 80%;
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        #dashboard-links h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
         }
 
-        /* Note Styles */
-        .note-item {
-            border: 1px solid #ccc;
-            padding: 10px;
+        #dashboard-links a {
+            display: block;
             margin-bottom: 10px;
-            border-radius: 5px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
         }
 
-        /* Profile Styles */
-        .profile-container {
-            padding: 20px;
+        #dashboard-links a:hover {
+            color: #0056b3;
+            text-decoration: underline;
         }
 
-        /* Note Creation Styles */
-        .note-creation-container {
-            padding: 20px;
+        #dashboard-links button {
+            background-color: #dc3545;
+            color: white;
         }
 
+        #dashboard-links button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div id="branding">
-                <h1><span class="highlight">Firebase</span> Web App</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li class="current"><a href="index.html">Home</a></li>
-                    <li><a href="dashboard.html">Dashboard</a></li>
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="note-creation.html">Create Note</a></li>
-                </ul>
-            </nav>
+    <div class="container">
+        <h2>Login/Signup</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="signUp()">Sign Up</button>
+        <button onclick="login()">Login</button>
+        <button onclick="googleSignIn()">Sign In with Google</button>
+
+        <div id="error" class="error-message hidden"></div>
+
+        <div id="dashboard-links" class="hidden">
+            <h3>Dashboard</h3>
+            <a href="profile.html">Profile</a>
+            <a href="note-creation.html">Create Note</a>
+            <button onclick="signOut()">Sign Out</button>
         </div>
-    </header>
+    </div>
 
-    <section id="showcase">
-        <div class="container">
-            <h1>Welcome to Firebase Web App</h1>
-            <p>A simple web application demonstrating Firebase integration.</p>
-        </div>
-    </section>
-
-    <section id="newsletter">
-        <div class="container">
-            <h1>Subscribe to Our Newsletter</h1>
-            <form>
-                <input type="email" placeholder="Enter Email...">
-                <button type="submit" class="button_1">Subscribe</button>
-            </form>
-        </div>
-    </section>
-
-    <section id="main">
-        <div class="container">
-            <article id="main-col">
-                <h1>About Us</h1>
-                <p>
-                    This is a basic web application built with HTML, CSS, and JavaScript, integrated with Firebase.
-                    It includes authentication, data storage, and real-time updates.
-                </p>
-                <p>
-                    This application demonstrates how to use Firebase for common web application features like user
-                    authentication, storing user profiles, and managing notes.
-                </p>
-            </article>
-
-            <aside id="sidebar">
-                <div class="dark">
-                    <h3>What We Do</h3>
-                    <p>We provide web development services using modern technologies and frameworks. Our expertise
-                        includes front-end development, back-end development, and cloud integration.</p>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <footer>
-        <p>Firebase Web App, Copyright &copy; 2024</p>
-    </footer>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Placeholder JavaScript - Navigation handling could be added here
+        // Firebase configuration
+        const firebaseConfig = {
+            "authDomain": "study2-7bdc7.firebaseapp.com",
+            "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7",
+            "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
+            "messagingSenderId": "320617984870",
+            "projectId": "study2-7bdc7",
+            "storageBucket": "study2-7bdc7.firebasestorage.app"
+        };
 
-        // Example: Change active link based on current page
-        const currentPage = window.location.pathname.split('/').pop(); // Get the filename
-        const navLinks = document.querySelectorAll('header nav ul li a');
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === currentPage) {
-                link.parentNode.classList.add('current'); // Add 'current' class to parent li
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorDiv = document.getElementById('error');
+        const dashboardLinks = document.getElementById('dashboard-links');
+
+        // Function to display error messages
+        function displayError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        // Function to hide error messages
+        function hideError() {
+            errorDiv.classList.add('hidden');
+            errorDiv.textContent = '';
+        }
+
+        // Function to show dashboard links
+        function showDashboard() {
+            dashboardLinks.classList.remove('hidden');
+        }
+
+        // Function to hide dashboard links
+        function hideDashboard() {
+            dashboardLinks.classList.add('hidden');
+        }
+
+        // Function to sign up with email and password
+        function signUp() {
+            hideError();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log("Sign up successful:", user);
+                    showDashboard();
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error("Sign up error:", errorCode, errorMessage);
+                    displayError(errorMessage);
+                });
+        }
+
+        // Function to login with email and password
+        function login() {
+            hideError();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log("Login successful:", user);
+                    showDashboard();
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error("Login error:", errorCode, errorMessage);
+                    displayError(errorMessage);
+                });
+        }
+
+        // Function to sign in with Google
+        function googleSignIn() {
+            hideError();
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Signed in
+                    const user = result.user;
+                    console.log("Google sign-in successful:", user);
+                    showDashboard();
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error("Google sign-in error:", errorCode, errorMessage);
+                    displayError(errorMessage);
+                });
+        }
+
+        // Function to sign out
+        function signOut() {
+            auth.signOut()
+                .then(() => {
+                    // Sign-out successful.
+                    console.log("Sign out successful");
+                    hideDashboard();
+                })
+                .catch((error) => {
+                    // An error happened.
+                    console.error("Sign out error:", error);
+                    displayError(error.message);
+                });
+        }
+
+        // Check if user is already signed in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                console.log("User is signed in:", user);
+                showDashboard();
             } else {
-                link.parentNode.classList.remove('current'); // Remove 'current' class from other li elements
+                // User is signed out
+                console.log("User is signed out");
+                hideDashboard();
             }
         });
     </script>

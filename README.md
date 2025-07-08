@@ -66,11 +66,8 @@ The application architecture is defined as follows:
 ## Files
 - note-creation.html
 - dashboard.html
-- profile.html
-- utils.js
-- styles.css
 - index.html
-- firebase-config.js
+- profile.html
 
 ## Getting Started
 1. Clone this repository
@@ -78,4 +75,4 @@ The application architecture is defined as follows:
 3. Start building!
 
 ---
-Generated on 07/07/2025, 13:58:44
+Generated on 08/07/2025, 23:27:33

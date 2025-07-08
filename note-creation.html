@@ -4,161 +4,614 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Note</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Enhanced CSS with more features and responsiveness */
+        body, h1, h2, h3, p, ul, li, form, input, textarea, button {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            border: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9ebee;
+            line-height: 1.6;
+            color: #333;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-start; /* Align content to the top */
-            min-height: 100vh; /* Ensure the body takes up the full viewport height */
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #3b5998;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background-color: #f0f2f5;
+            padding: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #3b5998;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #d8dfea;
         }
 
         .container {
             width: 80%;
-            max-width: 600px;
-            margin-top: 20px; /* Add some top margin */
-            padding: 20px;
+            max-width: 900px;
+            margin: 30px auto;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            margin-bottom: 30px;
+            color: #3b5998;
+            font-size: 2.5em;
+            font-weight: bold;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
+            font-weight: bold;
             color: #555;
         }
 
         input[type="text"],
         textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
+            color: #444;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #3b5998;
+            outline: none;
+            box-shadow: 0 0 5px rgba(59, 89, 152, 0.3);
         }
 
         textarea {
-            height: 150px;
+            height: 180px;
+            resize: vertical;
         }
 
         button {
-            background-color: #007bff;
+            background-color: #5cb85c;
             color: white;
-            padding: 12px 20px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #4cae4c;
+            transform: translateY(-2px);
         }
 
-        .dashboard-link, .back-button {
-            display: block;
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-message {
+            color: #d9534f;
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Footer Styles */
+        footer {
             text-align: center;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #777;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
         }
 
-        .dashboard-link:hover, .back-button:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
+        /* Responsive Design */
+        @media (max-width: 768px) {
             .container {
                 width: 95%;
+                padding: 20px;
             }
+
+            h1 {
+                font-size: 2em;
+                margin-bottom: 20px;
+            }
+
+            input[type="text"],
+            textarea {
+                padding: 10px;
+                margin-bottom: 15px;
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px 18px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                margin: 5px 0;
+            }
+        }
+
+        /* Additional Styles for Enhanced UI */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 7px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        /* Styles for a more modern button */
+        .modern-button {
+            background-color: #4267b2; /* Facebook Blue */
+            color: white;
+            padding: 16px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .modern-button:hover {
+            background-color: #364e92;
+            transform: translateY(-3px);
+        }
+
+        .modern-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for character counter */
+        .char-count {
+            text-align: right;
+            font-size: 0.9em;
+            color: #777;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        /* Style for input validation feedback */
+        input:invalid {
+            border-color: #e44d26;
+        }
+
+        input:valid {
+            border-color: #2ecc71;
+        }
+
+        /* Animated placeholder text */
+        input::placeholder,
+        textarea::placeholder {
+            color: #aaa;
+            opacity: 1; /* Firefox */
+        }
+
+        input:-ms-input-placeholder,
+        textarea:-ms-input-placeholder {
+            color: #aaa;
+        }
+
+        input::-ms-input-placeholder,
+        textarea::-ms-input-placeholder {
+            color: #aaa;
+        }
+
+        /* Dark Mode Toggle (Optional) */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #222;
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #eee;
+        }
+
+        body.dark-mode .container {
+            background-color: #444;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode h1,
+        body.dark-mode label {
+            color: #fff;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode textarea {
+            background-color: #555;
+            color: #eee;
+            border-color: #666;
+        }
+
+        body.dark-mode input[type="text"]:focus,
+        body.dark-mode textarea:focus {
+            border-color: #888;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark-mode footer {
+            background-color: #222;
+            color: #ccc;
+            border-top-color: #555;
+        }
+
+        /* Animation for note creation success */
+        @keyframes noteCreated {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .note-created-animation {
+            animation: noteCreated 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Note Creation</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+        </ul>
+    </nav>
+
+    <button class="dark-mode-toggle">Toggle Dark Mode</button>
 
     <div class="container">
-        <h1>Create New Note</h1>
+        <h1>Create a New Note</h1>
+        <form id="noteForm">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" placeholder="Enter note title" required minlength="3" maxlength="100">
+            </div>
 
-        <label for="noteTitle">Note Title:</label>
-        <input type="text" id="noteTitle" name="noteTitle" required>
+            <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" placeholder="Enter note content" required minlength="10" maxlength="1000"></textarea>
+                <div class="char-count">
+                    <span id="charCount">0</span> / 1000 characters
+                </div>
+            </div>
 
-        <label for="noteContent">Note Content:</label>
-        <textarea id="noteContent" name="noteContent" required></textarea>
-
-        <button onclick="createNote()">Save</button>
-        <a href="dashboard.html" class="back-button">Back to Dashboard</a>
+            <button type="submit" class="modern-button">Create Note</button>
+            <div id="error-message" class="error-message"></div>
+        </form>
     </div>
 
-    <a href="dashboard.html" class="dashboard-link">Go to Dashboard</a>
+    <footer>
+        &copy; 2024 Note App. All rights reserved.
+    </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
     <script>
-        // Firebase configuration
         const firebaseConfig = {
-            "authDomain": "study2-7bdc7.firebaseapp.com",
-            "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7",
-            "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
+            "storageBucket": "study2-7bdc7.firebasestorage.app",
             "messagingSenderId": "320617984870",
+            "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
             "projectId": "study2-7bdc7",
-            "storageBucket": "study2-7bdc7.firebasestorage.app"
+            "authDomain": "study2-7bdc7.firebaseapp.com",
+            "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7"
         };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
-        const auth = firebase.auth();
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        // Check if user is logged in
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                // Redirect to login page if not logged in
-                window.location.href = 'index.html';
+        document.addEventListener('DOMContentLoaded', function() {
+            const noteForm = document.getElementById('noteForm');
+            const titleInput = document.getElementById('title');
+            const contentTextarea = document.getElementById('content');
+            const errorMessageDiv = document.getElementById('error-message');
+            const charCountSpan = document.getElementById('charCount');
+            const darkModeToggle = document.querySelector('.dark-mode-toggle');
+            const body = document.body;
+
+            // Character Counter
+            contentTextarea.addEventListener('input', function() {
+                const textLength = contentTextarea.value.length;
+                charCountSpan.textContent = textLength;
+            });
+
+             // Dark Mode Toggle
+            darkModeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                const isDarkMode = body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkMode);
+            });
+
+            // Load Dark Mode Preference
+            const storedDarkMode = localStorage.getItem('darkMode');
+            if (storedDarkMode === 'true') {
+                body.classList.add('dark-mode');
             }
-        });
 
-        // Function to create a new note
-        async function createNote() {
-            const noteTitle = document.getElementById('noteTitle').value;
-            const noteContent = document.getElementById('noteContent').value;
+            // Form Submission Handler
+            noteForm.addEventListener('submit', function(event) {
+                event.preventDefault();
 
-            try {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert("User not logged in.");
+                const title = titleInput.value.trim();
+                const content = contentTextarea.value.trim();
+
+                // Input Validation (Enhanced)
+                if (!title) {
+                    errorMessageDiv.textContent = "Title cannot be empty.";
+                    titleInput.focus();
                     return;
                 }
 
-                // Add note to Firestore
-                await db.collection('notes').add({
-                    userId: user.uid,
-                    title: noteTitle,
-                    content: noteContent,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                if (title.length < 3) {
+                    errorMessageDiv.textContent = "Title must be at least 3 characters long.";
+                    titleInput.focus();
+                    return;
+                }
 
-                alert("Note saved successfully!");
-                window.location.href = 'dashboard.html'; // Redirect to dashboard after saving
-            } catch (error) {
-                console.error("Error saving                 alert("Failed to save note. Please try again. Error: " + error.message);
+                if (!content) {
+                    errorMessageDiv.textContent = "Content cannot be empty.";
+                    contentTextarea.focus();
+                    return;
+                }
+
+                if (content.length < 10) {
+                    errorMessageDiv.textContent = "Content must be at least 10 characters long.";
+                    contentTextarea.focus();
+                    return;
+                }
+
+                errorMessageDiv.textContent = ""; // Clear any previous error messages
+
+                const user = auth.currentUser;
+
+                if (!user) {
+                    errorMessageDiv.textContent = "User not authenticated. Please log in.";
+                    return;
+                }
+
+                const note = {
+                    title: title,
+                    content: content,
+                    userId: user.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                db.collection('notes').add(note)
+                    .then((docRef) => {
+                        console.log("Document written with ID: ", docRef.id);
+                        // Success Message and Animation
+                        noteForm.classList.add('note-created-animation');
+                        setTimeout(() => {
+                            noteForm.classList.remove('note-created-animation');
+                            window.location.href = 'dashboard.html';
+                        }, 500);
+                    })
+                    .catch((error) => {
+                        console.error("Error adding document: ", error);
+                        errorMessageDiv.textContent = "Error creating note. Please try again.";
+                    });
+            });
+
+             // Real-time character count update
+            contentTextarea.addEventListener('input', function() {
+                charCountSpan.textContent = this.value.length;
+            });
+
+            // Function to handle input validation and display error messages
+            function validateInput(inputElement, errorMessageElement, minLength, maxLength, fieldName) {
+                const inputValue = inputElement.value.trim();
+                if (!inputValue) {
+                    errorMessageElement.textContent = `${fieldName} cannot be empty.`;
+                    return false;
+                }
+
+                if (inputValue.length < minLength) {
+                    errorMessageElement.textContent = `${fieldName} must be at least ${minLength} characters long.`;
+                    return false;
+                }
+
+                if (inputValue.length > maxLength) {
+                    errorMessageElement.textContent = `${fieldName} cannot exceed ${maxLength} characters.`;
+                    return false;
+                }
+
+                errorMessageElement.textContent = ''; // Clear error message if valid
+                return true;
             }
-        }
+
+            // Implement more advanced features:
+            // 1. Auto-save functionality (using localStorage or Firebase if user is logged in)
+            function autoSave() {
+                const title = titleInput.value.trim();
+                const content = contentTextarea.value.trim();
+                const user = auth.currentUser;
+
+                if (user) {
+                    // Save to Firebase (if user is logged in)
+                    const autoSaveData = {
+                        title: title,
+                        content: content,
+                        userId: user.uid,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    // You would typically save this to a "drafts" collection or update an existing draft document
+                    // Example:
+                    db.collection('drafts').doc(user.uid).set(autoSaveData, { merge: true })
+                        .then(() => {
+                            console.log('Auto-saved to Firebase');
+                        })
+                        .catch((error) => {
+                            console.error('Error auto-saving to Firebase:', error);
+                        });
+                } else {
+                    // Save to localStorage (if user is not logged in)
+                    const autoSaveData = {
+                        title: title,
+                        content: content
+                    };
+                    localStorage.setItem('autoSaveNote', JSON.stringify(autoSaveData));
+                    console.log('Auto-saved to localStorage');
+                }
+            }
+
+            // Load auto-saved data on page load
+            function loadAutoSave() {
+                const user = auth.currentUser;
+                if (user) {
+                    // Load from Firebase (if user is logged in)
+                    db.collection('drafts').doc(user.uid).get()
+                        .then((doc) => {
+                            if (doc.exists) {
+                                const data = doc.data();
+                                titleInput.value = data.title || '';
+                                contentTextarea.value = data.content || '';
+                                charCountSpan.textContent = contentTextarea.value.length;
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error loading auto-save from Firebase:', error);
+                        });
+                } else {
+                    // Load from localStorage (if user is not logged in)
+                    const autoSaveData = localStorage.getItem('autoSaveNote');
+                    if (autoSaveData) {
+                        const data = JSON.parse(autoSaveData);
+                        titleInput.value = data.title || '';
+                        contentTextarea.value = data.content || '';
+                        charCountSpan.textContent = contentTextarea.value.length;
+                    }
+                }
+            }
+
+            // Call loadAutoSave on page load
+            loadAutoSave();
+
+            // Set interval for auto-saving (e.g., every 30 seconds)
+            setInterval(autoSave, 30000);
+
+            // 2. Rich text editor integration (e.g., using Quill or TinyMCE)
+            // This would involve replacing the textarea with a rich text editor instance
+            // and handling the editor's content accordingly.
+            // Example (using a hypothetical Quill integration):
+            // const quill = new Quill('#content', {
+            //     theme: 'snow'
+            // });
+
+            // 3. Add tags/categories to notes
+            // This would involve adding a new input field for tags/categories
+            // and updating the note object to include these tags.
+
+            // 4. Implement version history for notes
+            // This would involve storing previous versions of notes in a separate collection
+            // and allowing users to revert to older versions.
+
+            // 5. Add collaboration features (e.g., multiple users editing the same note)
+            // This would require more complex backend logic to handle concurrent edits
+            // and resolve conflicts.
+
+            // 6. Implement note sharing (e.g., sharing notes with specific users or making them public)
+            // This would involve adding sharing settings to notes and managing user permissions.
+
+            // 7. Add reminders/notifications for notes
+            // This would involve adding a date/time picker to notes
+            // and using a background task to send notifications at the specified time.
+        });
     </script>
 </body>
 </html>

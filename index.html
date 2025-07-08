@@ -1,286 +1,931 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Signup</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Sample 2 - Landing Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        /* General Styles */
         body {
-            font-family: 'Nunito', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
-            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white container */
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            transition: transform 0.3s ease-in-out;
+            width: 85%;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 20px;
         }
 
-        .container:hover {
-            transform: translateY(-5px);
+        /* Header Styles */
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding-top: 25px;
+            min-height: 80px;
+            border-bottom: #e74c3c 3px solid;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        h2 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 15px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 8px;
-            box-sizing: border-box;
-            background-color: #f0f0f0;
-            color: #333;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
-
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            background-color: #e2e2e2;
-            outline: none;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-            font-size: 1.1rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .error-message {
-            color: #ff4d4d;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        #dashboard-links {
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        #dashboard-links h3 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        #dashboard-links a {
-            display: block;
-            margin-bottom: 10px;
-            color: #007bff;
+        header a {
+            color: #fff;
             text-decoration: none;
-            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-size: 16px;
             transition: color 0.3s ease;
         }
 
-        #dashboard-links a:hover {
-            color: #0056b3;
-            text-decoration: underline;
+        header ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
         }
 
-        #dashboard-links button {
-            background-color: #dc3545;
-            color: white;
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 25px 0 25px;
         }
 
-        #dashboard-links button:hover {
-            background-color: #c82333;
+        header #branding {
+            float: left;
+        }
+
+        header #branding h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        header nav {
+            float: right;
+            margin-top: 15px;
+        }
+
+        header .highlight,
+        header .current a {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        header a:hover {
+            color: #ecf0f1;
+            font-weight: bold;
+        }
+
+        /* Showcase Styles */
+        #showcase {
+            min-height: 450px;
+            background: url('https://images.unsplash.com/photo-1507842214779-185cb4e7632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80') no-repeat 0 -100px;
+            background-size: cover;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Semi-transparent overlay */
+            z-index: 1;
+        }
+
+        #showcase .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        #showcase h1 {
+            margin-top: 120px;
+            font-size: 55px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        #showcase p {
+            font-size: 22px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Newsletter Styles */
+        #newsletter {
+            padding: 20px;
+            color: #fff;
+            background: #34495e;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        #newsletter h1 {
+            float: left;
+            font-size: 24px;
+            margin-top: 5px;
+        }
+
+        #newsletter form {
+            float: right;
+            margin-top: 10px;
+        }
+
+        #newsletter input[type="email"] {
+            padding: 8px;
+            height: 35px;
+            width: 300px;
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        .button_1 {
+            height: 40px;
+            background: #e74c3c;
+            border: 0;
+            padding-left: 25px;
+            padding-right: 25px;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button_1:hover {
+            background-color: #c0392b;
+        }
+
+        /* Boxes Styles */
+        #boxes {
+            margin-top: 30px;
+        }
+
+        #boxes .box {
+            float: left;
+            width: 30%;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #boxes .box:hover {
+            transform: translateY(-5px);
+        }
+
+        #boxes .box img {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        #boxes .box h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #boxes .box p {
+            font-size: 15px;
+            color: #555;
+        }
+
+        /* Sidebar Styles */
+        aside#sidebar {
+            float: right;
+            width: 32%;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        aside#sidebar .quote input,
+        aside#sidebar .quote textarea {
+            width: 92%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 15px;
+        }
+
+        aside#sidebar .quote label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Main Styles */
+        article#main-col {
+            float: left;
+            width: 65%;
+        }
+
+        article#main-col h1.page-title {
+            font-size: 32px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+
+        article#main-col p {
+            font-size: 17px;
+            color: #444;
+        }
+
+        /* Footer Styles */
+        footer {
+            padding: 30px;
+            margin-top: 30px;
+            color: #fff;
+            background-color: #e74c3c;
+            text-align: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer p {
+            font-size: 16px;
+        }
+
+        /* Media Queries */
+        @media(max-width: 768px) {
+
+            header #branding,
+            header nav,
+            header nav li,
+            #newsletter h1,
+            #newsletter form,
+            #boxes .box,
+            aside#sidebar,
+            article#main-col {
+                float: none;
+                text-align: center;
+                width: 100%;
+            }
+
+            header {
+                padding-bottom: 20px;
+            }
+
+            #showcase h1 {
+                margin-top: 60px;
+                font-size: 40px;
+            }
+
+            #showcase p {
+                font-size: 18px;
+            }
+
+            #newsletter form {
+                margin-top: 10px;
+            }
+
+            #newsletter input[type="email"] {
+                width: 80%;
+            }
+
+            #boxes .box {
+                margin-bottom: 20px;
+            }
+
+            aside#sidebar {
+                margin-top: 30px;
+            }
+        }
+
+        /* Additional Styles */
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 24px;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #ecf0f1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        #showcase {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Enhanced Button Styles */
+        .button_1 {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button_1:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: block;
+            width: 0;
+            padding-top: 0;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease-out, padding-top 0.4s ease-out;
+        }
+
+        .button_1:active:before {
+            width: 150%;
+            padding-top: 150%;
+            transition: width 0.4s ease-in, padding-top 0.4s ease-in;
+        }
+
+        /* Gradient Background */
+        body {
+            background: linear-gradient(to bottom, #f4f4f4, #e8e8e8);
+        }
+
+        /* Shadow Effects */
+        header {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #boxes .box {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        aside#sidebar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Transition Effects */
+        header a {
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        header a:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced Form Styles */
+        #newsletter input[type="email"] {
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        #newsletter input[type="email"]:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+
+        aside#sidebar .quote input:focus,
+        aside#sidebar .quote textarea:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Responsive Images */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Enhanced Typography */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        p {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Improved Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hover Effects */
+        #boxes .box:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* Interactive Elements */
+        .button_1:hover {
+            transform: scale(1.05);
+        }
+
+        /* Accessibility Improvements */
+        a:focus {
+            outline: 2px solid #e74c3c;
+        }
+
+        /* Enhanced Footer */
+        footer {
+            background: #34495e;
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        footer .social-icons a {
+            color: #fff;
+            font-size: 20px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-icons a:hover {
+            color: #e74c3c;
+        }
+
+        /* Improved Newsletter */
+        #newsletter {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #newsletter h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        #newsletter input[type="email"] {
+            width: 70%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        #newsletter .button_1 {
+            padding: 15px 30px;
+            font-size: 18px;
+        }
+
+        /* More Responsive Adjustments */
+        @media (max-width: 600px) {
+            #newsletter h1 {
+                font-size: 24px;
+            }
+
+            #newsletter input[type="email"] {
+                width: 90%;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Login/Signup</h2>
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="signUp()">Sign Up</button>
-        <button onclick="login()">Login</button>
-        <button onclick="googleSignIn()">Sign In with Google</button>
-
-        <div id="error" class="error-message hidden"></div>
-
-        <div id="dashboard-links" class="hidden">
-            <h3>Dashboard</h3>
-            <a href="profile.html">Profile</a>
-            <a href="note-creation.html">Create Note</a>
-            <button onclick="signOut()">Sign Out</button>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1><span class="highlight">Sample</span> 2</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
+
+    <!-- Showcase Section -->
+    <section id="showcase">
+        <div class="container">
+            <h1>Empowering Your Firebase Journey</h1>
+            <p>Unlock the full potential of Firebase with our comprehensive platform. From authentication to real-time
+                databases, we've got you covered.</p>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section id="newsletter">
+        <div class="container">
+            <h1>Stay Updated with the Latest Firebase Trends</h1>
+            <form id="newsletterForm">
+                <input type="email" placeholder="Enter Your Email...">
+                <button type="submit" class="button_1">Subscribe Now</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Boxes Section -->
+    <section id="boxes">
+        <div class="container">
+            <div class="box">
+                <img src="https://firebasestorage.googleapis.com/v0/b/study2-7bdc7.appspot.com/o/authentication.png?alt=media&token=64c01227-8c96-4c3c-9d16-85c218993e3d"
+                    alt="Firebase Authentication">
+                <h3>Firebase Authentication</h3>
+                <p>Secure your app with robust authentication methods, including email/password, Google, and more.
+                    Effortlessly manage user access and protect sensitive data.</p>
+            </div>
+            <div class="box">
+                <img src="https://firebasestorage.googleapis.com/v0/b/study2-7bdc7.appspot.com/o/firestore.png?alt=media&token=912782a4-4058-4730-8a83-00e0f87d779b"
+                    alt="Cloud Firestore">
+                <h3>Cloud Firestore</h3>
+                <p>Experience real-time data synchronization and flexible data modeling with Cloud Firestore. Build
+                    dynamic and responsive applications with ease.</p>
+            </div>
+            <div class="box">
+                <img src="https://firebasestorage.googleapis.com/v0/b/study2-7bdc7.appspot.com/o/cloudfunctions.png?alt=media&token=9609c6c2-1446-4441-9064-89653d992620"
+                    alt="Cloud Functions">
+                <h3>Cloud Functions</h3>
+                <p>Extend your app's capabilities with serverless backend logic using Cloud Functions. Automate tasks,
+                    integrate with third-party services, and scale effortlessly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content & Sidebar Section -->
+    <div class="container">
+        <article id="main-col">
+            <h1 class="page-title">About Us</h1>
+            <p>
+                Welcome to Sample 2, your gateway to mastering Firebase development. We are a dedicated team of
+                Firebase enthusiasts committed to providing you with the tools, resources, and expertise you need to
+                build exceptional applications.
+            </p>
+            <p>
+                Our mission is to empower developers of all skill levels to harness the power of Firebase and create
+                innovative solutions. Whether you're a seasoned Firebase expert or just starting your journey, we're
+                here to support you every step of the way.
+            </p>
+
+            <h2>Our Core Values</h2>
+            <ul>
+                <li><strong>Innovation:</strong> We constantly explore new Firebase features and technologies to bring
+                    you cutting-edge solutions.</li>
+                <li><strong>Collaboration:</strong> We foster a collaborative environment where developers can learn
+                    from each other and contribute to the Firebase community.</li>
+                <li><strong>Excellence:</strong> We strive for excellence in everything we do, from our code to our
+                    customer service.</li>
+                <li><strong>Accessibility:</strong> We believe that Firebase should be accessible to everyone, regardless
+                    of their background or experience.</li>
+            </ul>
+
+            <h2>Our Vision</h2>
+            <p>
+                To be the leading resource for Firebase developers worldwide, empowering them to build impactful
+                applications that make a difference.
+            </p>
+
+            <h2>Meet the Team</h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/100" alt="Team Member 1">
+                    <h3>John Doe</h3>
+                    <p>Lead Developer</p>
+                    <p>John is a passionate Firebase developer with over 10 years of experience. He's responsible for
+                        designing and implementing our core platform features.</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/100" alt="Team Member 2">
+                    <h3>Jane Smith</h3>
+                    <p>UI/UX Designer</p>
+                    <p>Jane is a talented UI/UX designer who ensures that our platform is both visually appealing and
+                        user-friendly.</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/100" alt="Team Member 3">
+                    <h3>Peter Jones</h3>
+                    <p>Community Manager</p>
+                    <p>Peter is our community manager, responsible for fostering a vibrant and supportive Firebase
+                        community.</p>
+                </div>
+            </div>
+
+            <h2>Contact Us</h2>
+            <p>
+                Have questions or feedback? We'd love to hear from you! Contact us at <a
+                    href="mailto:support@sample2.com">support@sample2.com</a>.
+            </p>
+        </article>
+
+        <aside id="sidebar">
+            <div class="quote">
+                <h3>Get a Free Consultation</h3>
+                <form id="quoteForm">
+                    <div>
+                        <label for="name">Name</label><br>
+                        <input type="text" id="name" placeholder="Your Name">
+                    </div>
+                    <div>
+                        <label for="email">Email</label><br>
+                        <input type="email" id="email" placeholder="Your Email Address">
+                    </div>
+                    <div>
+                        <label for="message">Message</label><br>
+                        <textarea id="message" placeholder="Tell us about your project"></textarea>
+                    </div>
+                    <button class="button_1" type="submit">Request Consultation</button>
+                </form>
+            </div>
+        </aside>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <p>Sample 2, Copyright &copy; 2024</p>
+            <div class="social-icons">
+                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+            <p>Powered by Firebase</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Initialization Script -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
         // Firebase configuration
         const firebaseConfig = {
-            "authDomain": "study2-7bdc7.firebaseapp.com",
-            "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7",
-            "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
+            "storageBucket": "study2-7bdc7.firebasestorage.app",
             "messagingSenderId": "320617984870",
+            "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
             "projectId": "study2-7bdc7",
-            "storageBucket": "study2-7bdc7.firebasestorage.app"
+            "authDomain": "study2-7bdc7.firebaseapp.com",
+            "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7"
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        } else {
+            firebase.app();
+        }
 
-        const auth = firebase.auth();
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const errorDiv = document.getElementById('error');
-        const dashboardLinks = document.getElementById('dashboard-links');
+        // Authentication state observer
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log('User is signed in:', user.uid);
+                // Example: Fetch user data from Firestore
+                db.collection("users").doc(user.uid).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            console.log("User data:", doc.data());
+                            // Update UI with user data if needed
+                        } else {
+                            console.log("No such document!");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error getting document:", error);
+                    });
+            } else {
+                console.log('User is signed out.');
+            }
+        });
 
-        // Function to display error messages
-        function displayError(message) {
-            errorDiv.textContent = message;
-            errorDiv.classList.remove('hidden');
+        // Newsletter subscription handler
+        const newsletterForm = document.querySelector('#newsletterForm');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const emailInput = newsletterForm.querySelector('input[type="email"]');
+                const email = emailInput.value;
+
+                if (email) {
+                    db.collection("newsletter_subscriptions").add({
+                        email: email,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                        .then(docRef => {
+                            console.log("Document written with ID: ", docRef.id);
+                            alert('Thank you for subscribing! You will receive updates on Firebase trends and tips.');
+                            emailInput.value = ''; // Clear the input
+                        })
+                        .catch(error => {
+                            console.error("Error adding document: ", error);
+                            alert('An error occurred. Please try again later.');
+                        });
+                } else {
+                    alert('Please enter your email address to subscribe.');
+                }
+            });
         }
 
-        // Function to hide error messages
-        function hideError() {
-            errorDiv.classList.add('hidden');
-            errorDiv.textContent = '';
+        // Quote form submission handler
+        const quoteForm = document.querySelector('#quoteForm');
+        if (quoteForm) {
+            quoteForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nameInput = quoteForm.querySelector('#name');
+                const emailInput = quoteForm.querySelector('#email');
+                const messageInput = quoteForm.querySelector('#message');
+
+                const name = nameInput.value;
+                const email = emailInput.value;
+                const message = messageInput.value;
+
+                if (name && email && message) {
+                    db.collection("consultation_requests").add({
+                        name: name,
+                        email: email,
+                        message: message,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                        .then(docRef => {
+                            console.log("Consultation request submitted with ID: ", docRef.id);
+                            alert('Thank you for your request! We will contact you shortly.');
+                            nameInput.value = '';
+                            emailInput.value = '';
+                            messageInput.value = '';
+                        })
+                        .catch(error => {
+                            console.error("Error submitting consultation request: ", error);
+                            alert('An error occurred. Please try again later.');
+                        });
+                } else {
+                    alert('Please fill in all the fields to request a consultation.');
+                }
+            });
         }
 
-        // Function to show dashboard links
-        function showDashboard() {
-            dashboardLinks.classList.remove('hidden');
+        // Function to simulate a loading state
+        function showLoading(element) {
+            element.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            element.disabled = true;
         }
 
-        // Function to hide dashboard links
-        function hideDashboard() {
-            dashboardLinks.classList.add('hidden');
+        // Function to hide the loading state
+        function hideLoading(element, originalText) {
+            element.innerHTML = originalText;
+            element.disabled = false;
         }
 
-        // Function to sign up with email and password
-        function signUp() {
-            hideError();
-            const email = emailInput.value;
-            const password = passwordInput.value;
+        // Example of reading data from Firestore
+        db.collection("users").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, " => ", doc.data());
+            });
+        }).catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
 
+        // Example of adding a new user to Firestore after authentication
+        function createUserInFirestore(user) {
+            db.collection("users").doc(user.uid).set({
+                email: user.email,
+                name: "", // You can add a name field in the registration form
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+                .then(() => {
+                    console.log("User document successfully written!");
+                })
+                .catch((error) => {
+                    console.error("Error writing user document: ", error);
+                });
+        }
+
+        // Example of signing up a user with email and password
+        function signUpWithEmailAndPassword(email, password) {
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Signed in
                     const user = userCredential.user;
-                    console.log("Sign up successful:", user);
-                    showDashboard();
+                    console.log("User signed up:", user.uid);
+                    createUserInFirestore(user); // Add user data to Firestore
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error("Sign up error:", errorCode, errorMessage);
-                    displayError(errorMessage);
+                    console.error("Error signing up:", error);
+                    alert("Error signing up: " + error.message);
                 });
         }
 
-        // Function to login with email and password
-        function login() {
-            hideError();
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
+        // Example of signing in a user with email and password
+        function signInWithEmailAndPassword(email, password) {
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Signed in
                     const user = userCredential.user;
-                    console.log("Login successful:", user);
-                    showDashboard();
+                    console.log("User signed in:", user.uid);
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error("Login error:", errorCode, errorMessage);
-                    displayError(errorMessage);
+                    console.error("Error signing in:", error);
+                    alert("Error signing in: " + error.message);
                 });
         }
 
-        // Function to sign in with Google
-        function googleSignIn() {
-            hideError();
-            const provider = new firebase.auth.GoogleAuthProvider();
-
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    // Signed in
-                    const user = result.user;
-                    console.log("Google sign-in successful:", user);
-                    showDashboard();
-                }).catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error("Google sign-in error:", errorCode, errorMessage);
-                    displayError(errorMessage);
-                });
-        }
-
-        // Function to sign out
+        // Example of signing out a user
         function signOut() {
             auth.signOut()
                 .then(() => {
-                    // Sign-out successful.
-                    console.log("Sign out successful");
-                    hideDashboard();
+                    console.log("User signed out");
                 })
                 .catch((error) => {
-                    // An error happened.
-                    console.error("Sign out error:", error);
-                    displayError(error.message);
+                    console.error("Error signing out:", error);
                 });
         }
 
-        // Check if user is already signed in
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                console.log("User is signed in:", user);
-                showDashboard();
-            } else {
-                // User is signed out
-                console.log("User is signed out");
-                hideDashboard();
-            }
-        });
+        // Example of resetting a user's password
+        function resetPassword(email) {
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    console.log("Password reset email sent!");
+                    alert("Password reset email sent! Check your inbox.");
+                })
+                .catch((error) => {
+                    console.error("Error sending password reset email:", error);
+                    alert("Error sending password reset email: " + error.message);
+                });
+        }
+
+        // Add more Firebase-related functions and features as needed
+
+        // Example: Fetch notes from Firestore
+        function fetchNotes() {
+            db.collection("notes").where("userId", "==", auth.currentUser.uid) // Assuming notes are associated with user ID
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        console.log(doc.id, " => ", doc.data());
+                        // Process the note data
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error getting notes: ", error);
+                });
+        }
     </script>
 </body>
+
 </html>

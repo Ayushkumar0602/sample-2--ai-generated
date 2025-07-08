@@ -3,238 +3,632 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>User Dashboard</title>
+    <!-- Enhanced CSS for styling -->
     <style>
-        /* Inline CSS for styling the dashboard */
+        /* General Styles */
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f7f9fc; /* Light gray background */
+            color: #343a40; /* Dark gray text */
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
+        /* Container Styles */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease; /* Smooth transition for sidebar changes */
         }
 
-        header {
-            background: #333;
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: #343a40; /* Dark background */
             color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
-            border-bottom: #bbb 1px solid;
+            padding: 30px;
+            box-sizing: border-box;
+            position: fixed; /* Fixed sidebar */
+            height: 100%;
+            overflow-y: auto; /* Scrollable sidebar content */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            z-index: 1000; /* Ensure it's above other content */
+            transition: width 0.3s ease; /* Smooth width transition */
         }
 
-        header a {
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
+        .sidebar.collapsed {
+            width: 80px; /* Collapsed sidebar width */
         }
 
-        header ul {
-            padding: 0;
-            margin: 0;
+        .sidebar.collapsed h2,
+        .sidebar.collapsed li span {
+            display: none; /* Hide text when collapsed */
         }
 
-        header li {
-            float: left;
-            display: inline;
-            padding: 0 20px 0 20px;
-        }
-
-        header #branding {
-            float: left;
-        }
-
-        header #branding h1 {
-            margin: 0;
-        }
-
-        header nav {
-            float: right;
-            margin-top: 10px;
-        }
-
-        header .highlight, header .current a {
-            color: #e8491d;
-            font-weight: bold;
-        }
-
-        header a:hover {
-            color: #bbb;
-        }
-
-        #newsletter {
-            padding: 15px;
-            color: #fff;
-            background: #333;
-        }
-
-        #newsletter h1 {
-            float: left;
-        }
-
-        #newsletter form {
-            float: right;
-            margin-top: 15px;
-        }
-
-        #newsletter input[type="email"] {
-            padding: 4px;
-            height: 25px;
-            width: 250px;
-        }
-
-        .button_1 {
-            height: 38px;
-            background: #e8491d;
-            border: 0;
-            padding-left: 20px;
-            padding-right: 20px;
-            color: #fff;
-        }
-
-        #main {
-            padding: 20px;
-        }
-
-        #sidebar {
-            float: right;
-            width: 30%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        #sidebar input[type="text"] {
-            width: 90%;
-            padding: 4px;
-            margin-bottom: 10px;
-        }
-
-        article#main-col {
-            float: left;
-            width: 65%;
-        }
-
-        ul#services {
-            padding: 0;
-        }
-
-        ul#services li {
-            list-style: none;
-            padding: 20px;
-            border: #ccc solid 1px;
-            margin-bottom: 5px;
-            background: #e6e6e6;
-        }
-
-        footer {
-            padding: 20px;
-            margin-top: 20px;
-            color: #fff;
-            background-color: #e8491d;
+        .sidebar.collapsed li a {
+            padding: 15px 10px; /* Adjust padding for icon-only view */
             text-align: center;
         }
 
-        /* Responsive CSS */
-        @media(max-width: 768px) {
-            header #branding,
-            header nav,
-            header nav li,
-            #newsletter h1,
-            #newsletter form,
-            #sidebar,
-            article#main-col {
-                float: none;
-                text-align: center;
-                width: 100%;
+        .sidebar h2 {
+            margin-bottom: 30px;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 24px; /* Ensure consistent icon size */
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.08); /* Lighten on hover */
+        }
+
+        /* Content Area Styles */
+        .content {
+            flex: 1;
+            padding: 30px;
+            box-sizing: border-box;
+            margin-left: 280px; /* Match sidebar width */
+            transition: margin-left 0.3s ease; /* Smooth margin transition */
+        }
+
+        .content.expanded {
+            margin-left: 80px; /* Collapsed sidebar width */
+        }
+
+        .dashboard-header {
+            background-color: #fff;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Deeper shadow */
+            border-bottom: 3px solid #007bff; /* Accent color */
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #343a40;
+        }
+
+        .dashboard-widgets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .widget {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Deeper shadow */
+            border-left: 5px solid #007bff; /* Accent color */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
+        }
+
+        .widget h3 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        /* Note list styling */
+        #noteList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #noteList li {
+            background-color: #f8f9fa; /* Light background */
+            border: 1px solid #dee2e6; /* Light border */
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        #noteList li:hover {
+            background-color: #e9ecef; /* Darken on hover */
+        }
+
+        #noteList li strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057; /* Darker text for title */
+        }
+
+        #noteList li p {
+            margin: 0;
+            color: #6c757d; /* Gray text for content */
+        }
+
+        /* User Info Styling */
+        #userInfo {
+            font-size: 1.1rem;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        /* Logout Button Styling */
+        #logoutBtn {
+            background-color: #dc3545; /* Red background */
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        #logoutBtn:hover {
+            background-color: #c82333; /* Darken on hover */
+        }
+
+        /* Toggle Button Styling */
+        #sidebarToggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1001; /* Ensure it's above sidebar */
+            transition: color 0.2s ease;
+        }
+
+        #sidebarToggle:hover {
+            color: #007bff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dashboard-widgets {
+                grid-template-columns: 1fr; /* Single column on smaller screens */
             }
 
-            header {
-                padding-bottom: 20px;
-            }
-
-            #newsletter form {
-                margin-top: 0;
+            .content {
+                padding: 20px;
             }
         }
-        .sign-out-button {
-            background-color: #f44336;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                box-shadow: none;
+                padding: 15px;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            #sidebarToggle {
+                display: none; /* Hide toggle on very small screens */
+            }
+
+            .dashboard-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Utility Classes */
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Additional Styles for Enhanced UI */
+        .widget .icon {
+            font-size: 3rem;
+            color: #007bff;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        .widget .data {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        /* Form Styling */
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
             border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        button[type="submit"] {
+            background-color: #28a745; /* Green */
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838; /* Darker Green */
+        }
+
+        /* Profile Page Styles */
+        .profile-card {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #007bff;
+            margin-bottom: 30px;
+        }
+
+        .profile-card h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        .profile-card p {
+            font-size: 1.1rem;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        /* Note Creation Page Styles */
+        .note-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #007bff;
+            margin-bottom: 30px;
+        }
+
+        .note-form h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        /* Data Table Styling */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Error Message Styling */
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+
+        /* Success Message Styling */
+        .success-message {
+            color: #28a745;
+            margin-top: 10px;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Dark Mode Styles (Optional) */
+        body.dark-mode {
+            background-color: #212529;
+            color: #fff;
+        }
+
+        body.dark-mode .dashboard-header,
+        body.dark-mode .widget,
+        body.dark-mode .profile-card,
+        body.dark-mode .note-form {
+            background-color: #343a40;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        body.dark-mode .dashboard-header h1,
+        body.dark-mode .widget h3,
+        body.dark-mode .profile-card h2,
+        body.dark-mode .note-form h2 {
+            color: #fff;
+        }
+
+        body.dark-mode #noteList li {
+            background-color: #495057;
+            border: 1px solid #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode #userInfo {
+            color: #fff;
+        }
+
+        body.dark-mode .data-table th {
+            background-color: #495057;
+            color: #fff;
+        }
+
+        body.dark-mode .data-table tbody tr:nth-child(even) {
+            background-color: #545b62;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        /* Additional Widget Styles */
+        .widget-small {
+            grid-column: span 1; /* Take up one column */
+        }
+
+        .widget-large {
+            grid-column: span 2; /* Take up two columns */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div id="branding">
-                <h1><span class="highlight">Dashboard</span></h1>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <button id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <h2>Dashboard Menu</h2>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                <li><a href="note-creation.html"><i class="fas fa-plus-circle"></i><span>Create Note</span></a></li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <div class="dashboard-header">
+                <h1>Welcome to Your Dashboard!</h1>
+                <p class="text-muted">Manage your notes and profile information here.</p>
             </div>
-            <nav>
-                <ul>
-                    <li class="current"><a href="dashboard.html">Dashboard</a></li>
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="note-creation.html">Create Note</a></li>
-                    <li><button class="sign-out-button" id="signOutBtn">Sign Out</button></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <section id="newsletter">
-        <div class="container">
-            <h1>Subscribe To Our Newsletter</h1>
-            <form>
-                <input type="email" placeholder="Enter Email...">
-                <button type="submit" class="button_1">Subscribe</button>
-            </form>
-        </div>
-    </section>
-
-    <section id="main">
-        <div class="container">
-            <article id="main-col">
-                <h1>Welcome to the Dashboard</h1>
-                <p>This is your personalized dashboard. You can access your profile, create new notes, and sign out.</p>
-
-                <ul id="services">
-                    <li>
-                        <h3>Profile</h3>
-                        <p>Manage your profile information.</p>
-                        <a href="profile.html">Go to Profile</a>
-                    </li>
-                    <li>
-                        <h3>Create Note</h3>
-                        <p>Create new notes and organize your thoughts.</p>
-                        <a href="note-creation.html">Create a Note</a>
-                    </li>
-                </ul>
-            </article>
-
-            <aside id="sidebar">
-                <div class="dark">
-                    <h3>What We Do</h3>
-                    <p>This is a simple dashboard with links to your profile and note creation page.  It also includes a sign out button.</p>
+            <div class="dashboard-widgets">
+                <div class="widget fade-in">
+                    <h3>Notes</h3>
+                    <ul id="noteList">
+                        <!-- Notes will be dynamically added here -->
+                    </ul>
+                    <a href="note-creation.html" class="mt-3">Create a New Note</a>
                 </div>
-            </aside>
+
+                <div class="widget fade-in">
+                    <h3>User Information</h3>
+                    <p id="userInfo">Loading user info...</p>
+                    <a href="profile.html" class="mt-3">Edit Profile</a>
+                </div>
+
+                <div class="widget widget-small fade-in">
+                    <h3>Quick Stats</h3>
+                    <div class="icon"><i class="fas fa-chart-bar"></i></div>
+                    <div class="data">12 Active Notes</div>
+                    <p class="text-muted">Updated 5 minutes ago</p>
+                </div>
+
+                <div class="widget widget-small fade-in">
+                    <h3>Reminders</h3>
+                    <div class="icon"><i class="fas fa-bell"></i></div>
+                    <div class="data">3 Upcoming</div>
+                    <p class="text-muted">Check your reminders</p>
+                </div>
+
+                <div class="widget widget-large fade-in">
+                    <h3>Recent Activity</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Date</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Note Created</td>
+                                <td>2024-01-01</td>
+                                <td>Created a new note titled "My First Note"</td>
+                            </tr>
+                            <tr>
+                                <td>Profile Updated</td>
+                                <td>2024-01-02</td>
+                                <td>Updated email address</td>
+                            </tr>
+                            <tr>
+                                <td>Note Edited</td>
+                                <td>2024-01-03</td>
+                                <td>Edited note "My First Note"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <p>Sample 2, Copyright &copy; 2024</p>
-    </footer>
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
+    <!-- Inline JavaScript for Firebase and real-time updates -->
     <script>
-        // Inline JavaScript for Firebase integration and sign-out functionality
-        // Your web app's Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
             authDomain: "study2-7bdc7.firebaseapp.com",
@@ -247,21 +641,194 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
-        const signOutBtn = document.getElementById('signOutBtn');
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        signOutBtn.addEventListener('click', function() {
-            firebase.auth().signOut().then(function() {
+        // Function to display notes
+        function displayNotes(notes) {
+            const noteList = document.getElementById('noteList');
+            noteList.innerHTML = ''; // Clear existing list
+
+            notes.forEach(note => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${note.title}</strong>
+                    <p>${note.content}</p>
+                `;
+                noteList.appendChild(li);
+            });
+        }
+
+        // Function to fetch and display user information
+        function displayUserInfo(user) {
+            const userInfoElement = document.getElementById('userInfo');
+            userInfoElement.textContent = `User ID: ${user.uid}, Email: ${user.email}`;
+        }
+
+        // Real-time listener for notes
+        function setupNotesListener() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    db.collection('notes')
+                        .where('userId', '==', user.uid) // Filter notes by user ID
+                        .orderBy('createdAt', 'desc') // Order notes by creation date
+                        .onSnapshot(snapshot => {
+                            const notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            displayNotes(notes);
+                        }, error => {
+                            console.error("Error getting notes: ", error);
+                        });
+                }
+            });
+        }
+
+        // Real-time listener for user information
+        function setupUserInfoListener() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    displayUserInfo(user);
+                } else {
+                    window.location.href = 'index.html';// Redirect to login if not logged in
+                }
+            });
+        }
+
+        // Logout Functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(() => {
                 // Sign-out successful.
-                console.log('Signed out successfully');
                 window.location.href = 'index.html'; // Redirect to login page
-            }).catch(function(error) {
+            }).catch((error) => {
                 // An error happened.
-                console.error('Sign out error:', error);
-                alert('Sign out failed. Please try again.');
+                console.error("Logout error:", error);
+                alert("Failed to log out. Please try again.");
+            });
+        });
+
+        // Sidebar Toggle Functionality
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
+        });
+
+        // Call the setup functions when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupNotesListener();
+            setupUserInfoListener();
+
+            // Theme Toggle (Optional)
+            const body = document.querySelector('body');
+            const themeToggle = document.createElement('button');
+            themeToggle.textContent = 'Toggle Dark Mode';
+            themeToggle.style.position = 'fixed';
+            themeToggle.style.bottom = '20px';
+            themeToggle.style.right = '20px';
+            themeToggle.style.padding = '10px 15px';
+            themeToggle.style.backgroundColor = '#007bff';
+            themeToggle.style.color = '#fff';
+            themeToggle.style.border = 'none';
+            themeToggle.style.borderRadius = '5px';
+            themeToggle.style.cursor = 'pointer';
+            body.appendChild(themeToggle);
+
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+            });
+        });
+
+        // Additional JavaScript Functions
+        // Function to fetch and display a random quote
+        function displayRandomQuote() {
+            const quotes = [
+                "The only way to do great work is to love what you do. - Steve Jobs",
+                "Strive not to be a success, but rather to be of value. - Albert Einstein",
+                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+                "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart. - Helen Keller",
+                "It is during our darkest moments that we must focus to see the light. - Aristotle",
+                "Believe you can and you're halfway there. - Theodore Roosevelt",
+                "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+                "The mind is everything. What you think you become. - Buddha",
+                "Happiness is not something readymade. It comes from your own actions. - Dalai Lama",
+                "The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela"
+            ];
+
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const quote = quotes[randomIndex];
+
+            const quoteElement = document.createElement('p');
+            quoteElement.textContent = quote;
+            quoteElement.classList.add('text-muted', 'mt-3');
+
+            const dashboardHeader = document.querySelector('.dashboard-header');
+            dashboardHeader.appendChild(quoteElement);
+        }
+
+        // Function to display a welcome message based on the time of day
+        function displayWelcomeMessage() {
+            const now = new Date();
+            const hour = now.getHours();
+            let welcomeMessage = '';
+
+            if (hour < 12) {
+                welcomeMessage = 'Good morning!';
+            } else if (hour < 18) {
+                welcomeMessage = 'Good afternoon!';
+            } else {
+                welcomeMessage = 'Good evening!';
+            }
+
+            const welcomeElement = document.createElement('h2');
+            welcomeElement.textContent = welcomeMessage;
+            welcomeElement.classList.add('mb-3');
+
+            const dashboardHeader = document.querySelector('.dashboard-header');
+            dashboardHeader.insertBefore(welcomeElement, dashboardHeader.firstChild);
+        }
+
+        // Function to simulate loading data
+        function simulateLoading() {
+            const loadingSpinner = document.createElement('div');
+            loadingSpinner.classList.add('loading-spinner');
+
+            const userInfoElement = document.getElementById('userInfo');
+            userInfoElement.textContent = '';
+            userInfoElement.appendChild(loadingSpinner);
+
+            setTimeout(() => {
+                setupUserInfoListener(); // Re-initialize user info listener after loading
+            }, 2000); // Simulate 2 seconds loading time
+        }
+
+        // Call additional functions on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupNotesListener();
+            setupUserInfoListener();
+            displayRandomQuote();
+            displayWelcomeMessage();
+            simulateLoading();
+
+            // Theme Toggle (Optional)
+            const body = document.querySelector('body');
+            const themeToggle = document.createElement('button');
+            themeToggle.textContent = 'Toggle Dark Mode';
+            themeToggle.style.position = 'fixed';
+            themeToggle.style.bottom = '20px';
+            themeToggle.style.right = '20px';
+            themeToggle.style.padding = '10px 15px';
+            themeToggle.style.backgroundColor = '#007bff';
+            themeToggle.style.color = '#fff';
+            themeToggle.style.border = 'none';
+            themeToggle.style.borderRadius = '5px';
+            themeToggle.style.cursor = 'pointer';
+            body.appendChild(themeToggle);
+
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
             });
         });
     </script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-</body>
-</html>
+
+

@@ -1,201 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
 
-    .container {
-      width: 80%;
-      max-width: 600px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-    }
+    <!-- Inline CSS for styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-    h1 {
-      text-align: center;
-      color: #333;
-    }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      color: #555;
-    }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
 
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-right: 10px;
-    }
+        .profile-info img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+        .profile-info p {
+            margin: 5px 0;
+        }
 
-    .button-container {
-      text-align: center;
-      margin-top: 20px;
-    }
+        .profile-details {
+            margin-top: 20px;
+        }
 
-    a {
-      color: #007bff;
-      text-decoration: none;
-    }
+        .profile-details label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
 
-    a:hover {
-      text-decoration: underline;
-    }
+        .profile-details input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-    @media (max-width: 768px) {
-      .container {
-        width: 95%;
-      }
-    }
-  </style>
+        .profile-details button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .profile-details button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            .profile-info img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Profile</h1>
-    <form id="profileForm">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name">
 
-      <label for="email">Email:</label>
-      <input type="text" id="email" name="email" readonly>
+    <div class="container">
+        <h1>User Profile</h1>
 
-      <label for="bio">Bio:</label>
-      <textarea id="bio" name="bio" rows="4"></textarea>
+        <div class="profile-info">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" id="profileImage">
+            <p id="displayName">Loading...</p>
+            <p id="email">Loading...</p>
+        </div>
 
-      <div class="button-container">
-        <button type="button" onclick="saveProfile()">Save</button>
-        <button type="button" onclick="goBack()">Back to Dashboard</button>
-        <button type="button" onclick="signOut()">Sign Out</button>
-      </div>
-    </form>
-  </div>
+        <div class="profile-details">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your Name">
 
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" placeholder="Write something about yourself" rows="4"></textarea>
 
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      "authDomain": "study2-7bdc7.firebaseapp.com",
-      "appId": "1:320617984870:web:04b61ea4ee88ae057e4ea7",
-      "apiKey": "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
-      "messagingSenderId": "320617984870",
-      "projectId": "study2-7bdc7",
-      "storageBucket": "study2-7bdc7.firebasestorage.app"
-    };
+            <button onclick="updateProfile()">Update Profile</button>
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+            <p id="updateMessage" class="error-message"></p>
+        </div>
+    </div>
 
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    <!-- Firebase Configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVYdfql5aqHrChlA1v3nxRLkIbYyWMvUg",
+            authDomain: "study2-7bdc7.firebaseapp.com",
+            projectId: "study2-7bdc7",
+            storageBucket: "study2-7bdc7.firebasestorage.app",
+            messagingSenderId: "320617984870",
+            appId: "1:320617984870:web:04b61ea4ee88ae057e4ea7"
+        };
+    </script>
 
-    // Check authentication status
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        // Redirect to login page if not authenticated
-        window.location.href = 'index.html';
-      } else {
-        // Load user data
-        loadUserData(user.uid);
-      }
-    });
+    <!-- Import Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
-    // Load user data from Firestore
-    function loadUserData(userId) {
-      db.collection('users').doc(userId).get()
-        .then(doc => {
-          if (doc.exists) {
-            const userData = doc.data();
-            document.getElementById('name').value = userData.name || '';
-            document.getElementById('email').value = userData.email || '';
-            document.getElementById('bio').value = userData.bio || '';
-          } else {
-            alert('User data not found.');
-          }
-        })
-        .catch(error => {
-          console.error('Error loading user data:', error);
-          alert('Error loading user data. Please try again.');
-        });
-    }
+    <!-- Inline JavaScript for Firebase integration -->
+    <script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
-    // Save profile data to Firestore
-    function saveProfile() {
-      const user = auth.currentUser;
-      if (!user) {
-        alert('User not authenticated.');
-        return;
-      }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
-      const name = document.getElementById('name').value;
-      const bio = document.getElementById('bio').value;
+        // Get references to HTML elements
+        const profileImage = document.getElementById('profileImage');
+        const displayName = document.getElementById('displayName');
+        const email = document.getElementById('email');
+        const nameInput = document.getElementById('name');
+        const bioInput = document.getElementById('bio');
+        const updateMessage = document.getElementById('updateMessage');
 
-      db.collection('users').doc(user.uid).update({
-        name: name,
-        bio: bio
-      })
-        .then(() => {
-          alert('Profile updated successfully!');
-        })
-        .catch(error => {
-          console.error('Error updating profile:', error);
-          alert('Error updating profile. Please try again.');
-        });
-    }
+        // Function to fetch and display user profile data
+        async function fetchUserProfile() {
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    // Fetch user document from Firestore
+                    const userDoc = await db.collection('users').doc(user.uid).get();
 
-    // Sign out function
-    function signOut() {
-      auth.signOut()
-        .then(() => {
-          // Redirect to login page after sign out
-          window.location.href = 'index.html';
-        })
-        .catch(error => {
-          console.error('Sign out error:', error);
-          alert('Error signing out. Please try again.');
-        });
-    }
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        displayName.textContent = userData.displayName || user.displayName || 'No Name';
+                        email.textContent = user.email;
+                        nameInput.value = userData.name || '';
+                        bioInput.value = userData.bio || '';
 
-    // Go back to dashboard
-    function goBack() {
-        window.location.href = 'dashboard.html';
-    }
-  </script>
+                        // Load profile image from storage if available
+                        if (userData.profileImageUrl) {
+                            profileImage.src = userData.profileImageUrl;
+                        } else {
+                            profileImage.src = "https://via.placeholder.com/150"; // Default image
+                        }
+                    } else {
+                        // User document doesn't exist
+                        displayName.textContent = user.displayName || 'No Name';
+                        email.textContent = user.email;
+                        profileImage.src = "https://via.placeholder.com/150";
+                    }
+                } else {
+                    // No user is signed in.
+                    window.location.href = 'index.html'; // Redirect to login page
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+                updateMessage.textContent = "Error loading profile. Please try again.";
+            }
+        }
+
+        // Function to update user profile data
+        async function updateProfile() {
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    const name = nameInput.value;
+                    const bio = bioInput.value;
+
+                    // Update user document in Firestore
+                    await db.collection('users').doc(user.uid).update({
+                        name: name,
+                        bio: bio,
+                        displayName: name // Update display name in Firestore
+                    });
+
+                    // Update display name in Firebase Auth
+                    await user.updateProfile({
+                        displayName: name
+                    });
+
+                    displayName.textContent = name; // Update display name on the page
+                    updateMessage.textContent = "Profile updated successfully!";
+                    updateMessage.style.color = 'green'; // Indicate success
+
+                    // Clear the message after 3 seconds
+                    setTimeout(() => {
+                        updateMessage.textContent = '';
+                        updateMessage.style.color = 'red';
+                    }, 3000);
+
+                } else {
+                    // No user is signed in.
+                    window.location.href = 'index.html'; // Redirect to login page
+                }
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                updateMessage.textContent = "Error updating profile. Please try again.";
+            }
+        }
+
+        // Call fetchUserProfile when the page loads
+        window.onload = fetchUserProfile;
+    </script>
+
 </body>
 </html>

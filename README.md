@@ -65,9 +65,9 @@ The application architecture is defined as follows:
 
 ## Files
 - note-creation.html
-- dashboard.html
-- index.html
 - profile.html
+- index.html
+- dashboard.html
 
 ## Getting Started
 1. Clone this repository
@@ -75,4 +75,4 @@ The application architecture is defined as follows:
 3. Start building!
 
 ---
-Generated on 08/07/2025, 23:27:33
+Generated on 08/07/2025, 23:47:51

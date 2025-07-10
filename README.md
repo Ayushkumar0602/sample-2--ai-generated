@@ -64,8 +64,12 @@ The application architecture is defined as follows:
 
 
 ## Files
-- index.html
 - dashboard.html
+- firebase.json
+- firestore.indexes.json
+- firestore.rules
+- index.html
+- .firebaserc
 
 ## Getting Started
 1. Clone this repository
@@ -73,4 +77,4 @@ The application architecture is defined as follows:
 3. Start building!
 
 ---
-Generated on 09/07/2025, 00:47:56
+Generated on 10/07/2025, 23:33:47
